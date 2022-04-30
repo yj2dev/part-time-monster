@@ -1,15 +1,23 @@
-import './App.css';
-import {BrowserRouter, Link, Route} from "react-router-dom";
-import Test from "./Test";
+import "./App.css";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import Layout from "./layouts";
+import LandingPage from "./pages/LandingPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   return (
     <>
-    <BrowserRouter>
-      <h3>Monster ... </h3>
-      <Link to ="/user/account">로그인</Link>
-      {/*<Route path="/" components={Test}>3322</Route>*/}
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/register" element={<RegisterPage />}></Route>
+          <Route path="/login" element={<LoginPage />}></Route>
+          <Route path="/" element={<LandingPage />}></Route>
+        </Routes>
+        <Link to="/">홈</Link>
+        <Link to="/login">로그인</Link>
+        <Link to="/register">회원가입</Link>
+      </BrowserRouter>
     </>
   );
 }

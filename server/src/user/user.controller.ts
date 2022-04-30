@@ -12,8 +12,6 @@ import { UserService } from './user.service';
 import { UserRegisterDto } from './dto/user.register.dto';
 import { UserLoginDto } from './dto/user.login.dto';
 import { HttpExceptionFilter } from '../http-exception.filter';
-import { LoggedInGuard } from '../auth/logged-in.guard';
-import { NotLoggedInGuard } from '../auth/not-logged-in-guard';
 
 @UseFilters(HttpExceptionFilter)
 @Controller('user')
@@ -21,7 +19,6 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   // 모든 유저 조회
-  @UseGuards(new LoggedInGuard())
   @Get('all')
   getAllUser() {
     return 'nobody...';
@@ -40,7 +37,6 @@ export class UserController {
   }
 
   // 회원가입
-  @UseGuards(new NotLoggedInGuard())
   @Post('register')
   async register(@Body() userRegisterDTO: UserRegisterDto): Promise<any> {
     return this.userService.register(userRegisterDTO);

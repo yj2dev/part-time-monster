@@ -10,6 +10,12 @@ export class UserRepository {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {} //
 
+  async updatePassword(id, password) {
+    const result = await this.userRepository.update(id, password);
+    console.log('updatePassword result >> ', result);
+    return result;
+  }
+
   async createUser(userRegisterDTO: UserRegisterDto): Promise<any> {
     console.log('userRegisterDTO >> ', userRegisterDTO);
     const result = await this.userRepository.save({
