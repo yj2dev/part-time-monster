@@ -1,4 +1,8 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { User } from '../entities/User';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,6 +15,10 @@ import { UserLoginDto } from './dto/user.login.dto';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
+  async updatePassword(): Promise<any> {
+    return 'updatePassword';
+  }
+
   async login(userLoginDTO: UserLoginDto): Promise<any> {
     console.log('userLoginDTO >> ', userLoginDTO);
     const user = await this.userRepository.findUserById(userLoginDTO.id);
@@ -18,14 +26,20 @@ export class UserService {
 
     // 해당하는 유저가 없을때
     if (!user) {
-      throw new HttpException('이미 존재하는 사용자입니다.', 401);
+      console.log('not user');
+      throw new HttpException('아이디가 존재하지 않습니다.', 401);
     }
 
-    // 비밀번호가 일치하지 않을때
     const comparePassword = await bcrypt.compare(
       userLoginDTO.password,
       user.password,
     );
+
+    // 비밀번호가 일치하지 않을때
+    if (!comparePassword) {
+      console.log('not password');
+      throw new HttpException('비밀번호가 일치하지 않습니다.', 401);
+    }
 
     console.log('comparePassword >> ', comparePassword);
   }
@@ -35,7 +49,7 @@ export class UserService {
     console.log('user >> ', user);
 
     if (user) {
-      throw new HttpException('이미 존재하는 사용자입니다.', 401);
+      throw new UnauthorizedException('이미 존재하는 사용자입니다.');
     }
 
     // 비밀번호 암호화

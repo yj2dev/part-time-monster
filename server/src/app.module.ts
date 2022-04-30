@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { JobPostModule } from './job-post/job-post.module';
 import { User } from './entities/User';
 import * as ormconfig from '../ormconfig';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import * as ormconfig from '../ormconfig';
     TypeOrmModule.forRoot(ormconfig),
     UserModule,
     JobPostModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
