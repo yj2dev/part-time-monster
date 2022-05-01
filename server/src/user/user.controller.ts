@@ -5,11 +5,12 @@ import {
   HttpException,
   Patch,
   Post,
+  Req,
   Res,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { UserService } from './user.service';
 import { UserRegisterDto } from './dto/user.register.dto';
 import { UserLoginDto } from './dto/user.login.dto';
@@ -26,9 +27,9 @@ export class UserController {
   ) {}
 
   // 모든 유저 조회
-  @Get('all')
-  getAllUser() {
-    return 'nobody...';
+  @Get('auth')
+  getAllUser(@Req() req: Request) {
+    console.log(req.cookies['jwt']);
   }
 
   // 비밀번호 변경

@@ -1,11 +1,23 @@
 import { Container, Logo, SearchSection, AccountInfoSection } from "./styled";
 import { AiOutlineUser, AiOutlineSearch, AiOutlineClose } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Header = () => {
   const navigate = useNavigate();
   const [showAccountInfo, setShowAccountInfo] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get("/user/auth")
+      .then((res) => {
+        console.log("res >> ", res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   return (
     <Container>

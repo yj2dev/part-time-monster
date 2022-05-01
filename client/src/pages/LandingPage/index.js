@@ -4,7 +4,6 @@ const LandingPage = () => {
   return (
     <Container>
       <Header />
-      {/*<img src="img/part-time-font.png" />*/}
     </Container>
   );
 };
