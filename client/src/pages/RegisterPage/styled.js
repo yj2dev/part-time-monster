@@ -79,6 +79,7 @@ export const RegisterForm = styled.form`
     font-size: 20px;
     outline: none;
     width: 200px;
+    border: none;
   }
 `;
 

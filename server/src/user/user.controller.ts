@@ -12,9 +12,10 @@ import { UserService } from './user.service';
 import { UserRegisterDto } from './dto/user.register.dto';
 import { UserLoginDto } from './dto/user.login.dto';
 import { HttpExceptionFilter } from '../http-exception.filter';
+import { User } from '../entities/User';
 
 @UseFilters(HttpExceptionFilter)
-@Controller('user')
+@Controller('api/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -39,6 +40,9 @@ export class UserController {
   // 회원가입
   @Post('register')
   async register(@Body() userRegisterDTO: UserRegisterDto): Promise<any> {
+    // async register(@Body() body): Promise<any> {
+    //   console.log('body >> ', body);
+    console.log('userRegisterDTO >> ', userRegisterDTO);
     return this.userService.register(userRegisterDTO);
   }
 }

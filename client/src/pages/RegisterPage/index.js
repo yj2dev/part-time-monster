@@ -10,7 +10,7 @@ import {
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { paste } from "@testing-library/user-event/dist/paste";
+import axios from "axios";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -42,25 +42,40 @@ const RegisterPage = () => {
     if (userPassword !== userPasswordCheck) {
       setError({ ...error, passwordCheck: true });
       return;
+    } else setError({ ...error, passwordCheck: false });
+
+    let payload = {
+      id: userId,
+      password: userPassword,
+      name: userName,
+      birth: userBirth,
+      sex: !userIsWoman ? "남자" : "여자",
+      email: userEmail,
+      phone: userPhone,
+      isCompany: 0,
+    };
+    if (isCompany) {
+      payload = {
+        isCompany: 1,
+        companyNumber,
+        companyName,
+        companyCeoName,
+        companyContact,
+        companyAddress,
+        companySize,
+      };
     }
 
-    const payload = {
-      userId,
-      userPassword,
-      userPasswordCheck,
-      userName,
-      userBirth,
-      userIsWoman,
-      userEmail,
-      userPhone,
-      companyNumber,
-      companyName,
-      companyCeoName,
-      companyContact,
-      companyAddress,
-      companySize,
-    };
     console.log("paylaod >> ", payload);
+
+    axios
+      .post("http://localhost:8000/api/user/register", payload)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   return (
@@ -153,7 +168,7 @@ const RegisterPage = () => {
             </td>
             <td>
               <input
-                type="password"
+                type="text"
                 placeholder="YYYYMMDD / EX) 19990806"
                 value={userBirth}
                 onChange={(e) => setUserBirth(e.target.value)}
