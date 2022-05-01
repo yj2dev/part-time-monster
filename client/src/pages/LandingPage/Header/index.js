@@ -1,38 +1,45 @@
 import { Container, Logo, SearchSection, AccountInfoSection } from "./styled";
-import { AiOutlineUser, AiOutlineSearch, AiOutlineClose } from "react-icons/ai";
-import { useEffect, useState } from "react";
+import {
+  AiOutlineUser,
+  AiOutlineSearch,
+  AiOutlineClose,
+  AiOutlineMenu,
+} from "react-icons/ai";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import useSWR from "swr";
+import fetcher from "../../../utils/swr/fetcher";
+import UserMenu from "../../../components/UserMenu";
 
 const Header = () => {
+  const { data, err } = useSWR("/api/user/auth", fetcher);
+  console.log("data >> ", data);
   const navigate = useNavigate();
   const [showAccountInfo, setShowAccountInfo] = useState(false);
-
-  useEffect(() => {
-    axios
-      .get("/user/auth")
-      .then((res) => {
-        console.log("res >> ", res);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   return (
     <Container>
       <Logo>
         <img src="img/logo.png" />
         <h3>알바 몬스터</h3>
-        <div
-          id="account_info"
-          className={showAccountInfo && "show_account_info"}
-          onClick={() => setShowAccountInfo((prev) => !prev)}
-        >
-          {!showAccountInfo ? (
-            <AiOutlineUser style={{ fontSize: "32px" }} />
+        <div id="account_info">
+          {!data ? (
+            <div onClick={() => setShowAccountInfo((prev) => !prev)}>
+              {!showAccountInfo ? (
+                <AiOutlineUser style={{ fontSize: "32px" }} />
+              ) : (
+                <AiOutlineClose style={{ fontSize: "32px" }} />
+              )}
+            </div>
           ) : (
-            <AiOutlineClose style={{ fontSize: "32px" }} />
+            <div onClick={() => setShowUserMenu((prev) => !prev)}>
+              {!showUserMenu ? (
+                <AiOutlineMenu style={{ fontSize: "32px" }} />
+              ) : (
+                <AiOutlineClose style={{ fontSize: "32px" }} />
+              )}
+            </div>
           )}
         </div>
       </Logo>
@@ -63,6 +70,8 @@ const Header = () => {
           </div>
         </AccountInfoSection>
       )}
+
+      {showUserMenu && <UserMenu user={data.data} />}
     </Container>
   );
 };

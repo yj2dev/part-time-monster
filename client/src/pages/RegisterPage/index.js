@@ -69,7 +69,7 @@ const RegisterPage = () => {
     console.log("paylaod >> ", payload);
 
     axios
-      .post("http://localhost:8000/api/user/register", payload)
+      .post("/api/user/register", payload)
       .then((res) => {
         console.log(res.data);
       })

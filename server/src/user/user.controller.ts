@@ -9,6 +9,7 @@ import {
   Res,
   UseFilters,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { UserService } from './user.service';
@@ -19,8 +20,10 @@ import { User } from '../entities/User';
 import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/guard/jwt.guard';
 import { GetUser } from '../common/get-user';
+import { SuccessInterceptor } from '../common/interceptor/success.interceptor';
 
 @UseFilters(HttpExceptionFilter)
+@UseInterceptors(SuccessInterceptor)
 @Controller('api/user')
 export class UserController {
   constructor(
@@ -50,6 +53,13 @@ export class UserController {
   ): Promise<any> {
     const { jwt, user } = await this.authService.jwtSignin(userLoginDto);
     res.cookie('jwt', jwt);
+  }
+
+  // 로그아웃
+  @Get('logout')
+  @UseGuards(JwtAuthGuard)
+  async logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('jwt');
   }
 
   // 회원가입

@@ -20,12 +20,14 @@ const LoginPage = () => {
   function onSubmitLogin() {
     if (id.length === 0 || password.length === 0) return;
     axios
-      .post("http://localhost:8000/api/user/login", { id, password })
+      .post("/api/user/login", { id, password })
       .then((res) => {
-        console.log(res.data);
+        if (res.data) {
+          navigate("/");
+        }
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
       });
   }
 
