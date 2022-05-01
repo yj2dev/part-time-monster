@@ -17,6 +17,8 @@ import { UserLoginDto } from './dto/user.login.dto';
 import { HttpExceptionFilter } from '../http-exception.filter';
 import { User } from '../entities/User';
 import { AuthService } from '../auth/auth.service';
+import { JwtAuthGuard } from '../auth/guard/jwt.guard';
+import { GetUser } from '../common/get-user';
 
 @UseFilters(HttpExceptionFilter)
 @Controller('api/user')
@@ -27,9 +29,10 @@ export class UserController {
   ) {}
 
   // 모든 유저 조회
+  @UseGuards(JwtAuthGuard)
   @Get('auth')
-  getAllUser(@Req() req: Request) {
-    console.log(req.cookies['jwt']);
+  auth(@GetUser() user) {
+    return user;
   }
 
   // 비밀번호 변경
