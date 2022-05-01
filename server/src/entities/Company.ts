@@ -9,6 +9,8 @@ export class Company {
 
   @Column('varchar', { name: 'name', length: 50 })
   name: string;
+
+  @Column('varchar', { name: 'ceo_name', length: 10 })
   ceoName: string;
 
   @Column('varchar', { name: 'contact', length: 20 })

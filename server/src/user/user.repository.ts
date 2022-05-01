@@ -3,11 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/User';
 import { Repository } from 'typeorm';
 import { UserRegisterDto } from './dto/user.register.dto';
+import { Company } from '../entities/Company';
 
 @Injectable()
 export class UserRepository {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Company) private companyRepository: Repository<Company>,
   ) {} //
 
   async updatePassword(id, password) {
@@ -18,11 +20,28 @@ export class UserRepository {
 
   async createUser(userRegisterDTO: UserRegisterDto): Promise<any> {
     console.log('userRegisterDTO >> ', userRegisterDTO);
-    const result = await this.userRepository.save({
+
+    let result;
+
+    // 기업정보가(기업회원) 있다면 기업정보 저장
+    if (userRegisterDTO.isCompany) {
+      result = await this.companyRepository.save({
+        number: userRegisterDTO['toCompanyId'],
+        name: userRegisterDTO['companyName'],
+        ceoName: userRegisterDTO['companyCeoName'],
+        contact: userRegisterDTO['companyContact'],
+        address: userRegisterDTO['companyAddress'],
+        size: userRegisterDTO['companySize'],
+      });
+    }
+    console.log('createUser company result >> ', result);
+
+    // 개인회원
+    result = await this.userRepository.save({
       ...userRegisterDTO,
     });
 
-    console.log('createUser result >> ', result);
+    console.log('createUser user result >> ', result);
     return result;
   }
 

@@ -21,6 +21,7 @@ export class UserService {
 
   async login(userLoginDTO: UserLoginDto): Promise<any> {
     console.log('userLoginDTO >> ', userLoginDTO);
+
     const user = await this.userRepository.findUserById(userLoginDTO.id);
     console.log('user >> ', user);
 

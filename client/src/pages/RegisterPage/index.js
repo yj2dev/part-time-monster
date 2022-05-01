@@ -52,12 +52,12 @@ const RegisterPage = () => {
       sex: !userIsWoman ? "남자" : "여자",
       email: userEmail,
       phone: userPhone,
-      isCompany: 0,
+      isCompany: !isCompany ? 0 : 1,
     };
     if (isCompany) {
       payload = {
-        isCompany: 1,
-        companyNumber,
+        ...payload,
+        toCompanyId: companyNumber,
         companyName,
         companyCeoName,
         companyContact,

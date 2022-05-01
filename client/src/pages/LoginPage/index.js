@@ -9,12 +9,25 @@ import {
 import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [isCompanyUser, setIsCompanyUser] = useState(false);
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
+
+  function onSubmitLogin() {
+    if (id.length === 0 || password.length === 0) return;
+    axios
+      .post("http://localhost:8000/api/user/login", { id, password })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 
   return (
     <Container>
@@ -47,16 +60,31 @@ const LoginPage = () => {
         <table>
           <tr>
             <td>
-              <input type="text" placeholder="아이디" />
+              <input
+                type="text"
+                placeholder="아이디"
+                value={id}
+                onChange={(e) => setId(e.target.value)}
+              />
             </td>
           </tr>
           <tr>
             <td>
-              <input type="password" placeholder="비밀번호" />
+              <input
+                type="password"
+                placeholder="비밀번호"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </td>
           </tr>
         </table>
-        <button className={isCompanyUser && "login-company"}>로그인</button>
+        <button
+          onClick={onSubmitLogin}
+          className={isCompanyUser && "login-company"}
+        >
+          로그인
+        </button>
       </UserLoginSection>
       <Register>
         계정이 없으세요? <Link to="/register">가입하기</Link>

@@ -8,6 +8,7 @@ import { UserRepository } from '../user/user.repository';
 import { UserLoginDto } from '../user/dto/user.login.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { request } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -77,10 +78,11 @@ export class AuthService {
 
     try {
       // sub: token의 제목
-      const jwt = await this.jwtService.signAsync(
+      const jwt = this.jwtService.sign(
         { sub: user.id },
         { secret: process.env.JWT_SECRET },
       );
+
       return { jwt, user };
     } catch (err) {
       throw new BadRequestException(err);
