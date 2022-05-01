@@ -1,15 +1,11 @@
 import { Container, Logo, SearchSection, AccountInfoSection } from "./styled";
 import { AiOutlineUser, AiOutlineSearch, AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [showAccountInfo, setShowAccountInfo] = useState(false);
-
-  console.log(showAccountInfo);
-
-  const onCloseAccountInfo = () => {
-    setShowAccountInfo(false);
-  };
 
   return (
     <Container>
@@ -40,8 +36,16 @@ const Header = () => {
             로그인하고 알바몬스터의 다양한 서비스를 경험해보세요.
           </div>
           <div className="button_wrapper">
-            <button style={{ background: "#ffffff" }}>로그인</button>
-            <button style={{ background: "#363d4d", color: "#ffffff" }}>
+            <button
+              onClick={() => navigate("/login")}
+              style={{ background: "#ffffff" }}
+            >
+              로그인
+            </button>
+            <button
+              onClick={() => navigate("/register")}
+              style={{ background: "#363d4d", color: "#ffffff" }}
+            >
               회원가입
             </button>
           </div>

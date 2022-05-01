@@ -8,9 +8,10 @@ body {
     padding: 0px;
     user-select: none;
 }
-
 input {
     font-family: 'Noto Sans KR', sans-serif
-
-
+}
+table, tr, td {
+    /*border: 1px solid black;*/
+    border-collapse: collapse;
 }

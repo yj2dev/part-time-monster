@@ -71,7 +71,7 @@ export const AccountInfoSection = styled.div`
   top: 100px;
   background-color: #ffffff;
   width: 100%;
-  height: 300px;
+  height: 225px;
   border: none;
   border-radius: 0 0 50px 50px;
   box-shadow: 0px 8px 5px 1px #c1c2c6;
