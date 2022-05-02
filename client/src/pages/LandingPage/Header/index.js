@@ -5,18 +5,26 @@ import {
   AiOutlineClose,
   AiOutlineMenu,
 } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useSWR from "swr";
-import fetcher from "../../../utils/swr/fetcher";
 import UserMenu from "../../../components/UserMenu";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { authUser } from "../../../_actions/userActions";
 
 const Header = () => {
-  const { data, err } = useSWR("/api/user/auth", fetcher);
-  console.log("data >> ", data);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const user = useSelector((state) => state.user);
+
+  console.log("user >> ", user);
   const [showAccountInfo, setShowAccountInfo] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+
+  useEffect(() => {
+    dispatch(authUser());
+  }, []);
 
   return (
     <Container>
@@ -24,7 +32,7 @@ const Header = () => {
         <img src="img/logo.png" />
         <h3>알바 몬스터</h3>
         <div id="account_info">
-          {!data ? (
+          {!user.isSignin.success ? (
             <div onClick={() => setShowAccountInfo((prev) => !prev)}>
               {!showAccountInfo ? (
                 <AiOutlineUser style={{ fontSize: "32px" }} />
@@ -71,7 +79,7 @@ const Header = () => {
         </AccountInfoSection>
       )}
 
-      {showUserMenu && <UserMenu user={data.data} />}
+      {showUserMenu && <UserMenu user={user} />}
     </Container>
   );
 };

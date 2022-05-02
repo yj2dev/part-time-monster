@@ -42,7 +42,7 @@ export class UserController {
   @Patch('password')
   async updatePassword(@Body() userLoginDto: UserLoginDto): Promise<any> {
     // return this.userService.login(userLoginDto);
-    // return this.authService.jwtCheckAccount(userLoginDto);
+    // return this.authService.jwtCheckAccount(userLo ginDto);
   }
 
   // 로그인
