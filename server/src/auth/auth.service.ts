@@ -3,14 +3,20 @@ import {
   HttpException,
   Injectable,
   UnauthorizedException,
+  UseFilters,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserRepository } from '../user/user.repository';
 import { UserLoginDto } from '../user/dto/user.login.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { request } from 'express';
+import { HttpExceptionFilter } from '../http-exception.filter';
+import { SuccessInterceptor } from '../common/interceptor/success.interceptor';
 
 @Injectable()
+@UseFilters(HttpExceptionFilter)
+@UseInterceptors(SuccessInterceptor)
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
@@ -59,15 +65,24 @@ export class AuthService {
   }
 
   // 로그인
-  async jwtSignin(userLoginDto: UserLoginDto) {
-    const { id, password } = userLoginDto;
-
-    // 해당하는 휴대폰번호가 존재하는지 확인
+  async jwtSignin(id, password, isCompany) {
+    // 해당하는 유저가 존재하는지 확인
     const user = await this.userRepository.findUserById(id);
+
+    console.log('user >> ', user);
 
     if (!user) {
       throw new UnauthorizedException('유저가 존재하지 않습니다.');
     }
+
+    // 회원유형에 맞게 로그인 시도했는지 확인
+    // 개인회원 확인
+    if (!isCompany && isCompany !== user.isCompany)
+      throw new UnauthorizedException('회원유형이 맞지 않습니다.');
+    if (isCompany && isCompany !== user.isCompany)
+      throw new UnauthorizedException('회원유형이 맞지 않습니다.');
+
+    // 기업회원 확인
 
     // 비밀번호 또한 일치하는지 확인
     const isPassword: boolean = await bcrypt.compare(password, user.password);

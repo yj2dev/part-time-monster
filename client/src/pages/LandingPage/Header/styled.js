@@ -7,13 +7,16 @@ export const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 200px;
+  background-color: #ffffff;
   border: none;
   border-radius: 0 0 50px 50px;
   box-shadow: 0px 5px 5px 2px #c1c2c6;
   position: relative;
+  font-family: "Jua", sans-serif;
 `;
 
 export const Logo = styled.div`
+  z-index: 100;
   padding-bottom: 12px;
   img {
     cursor: pointer;
@@ -68,8 +71,9 @@ export const SearchSection = styled.div`
 `;
 export const AccountInfoSection = styled.div`
   position: absolute;
-  top: 100px;
+  top: 0px;
   background-color: #ffffff;
+  padding-top: 100px;
   width: 100%;
   height: 225px;
   border: none;

@@ -1,17 +1,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
-/* font-family: 'Black Han Sans', sans-serif */
+/* font-family: 'Black Han Sans', sans-serif; */
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-/* font-family: 'Noto Sans KR', sans-serif */
+/* font-family: 'Noto Sans KR', sans-serif; */
+
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+/* font-family: 'Jua', sans-serif; */
+
 body {
     margin:0px;
     padding: 0px;
     user-select: none;
+    background-color: #f1f2f6;
+ font-family: 'Noto Sans KR', sans-serif;
 }
 input {
-    font-family: 'Noto Sans KR', sans-serif
+    font-family: 'Noto Sans KR', sans-serif;
+}
+button {
+    font-family: 'Noto Sans KR', sans-serif;
+
 }
 table, tr, td {
     /*border: 1px solid black;*/
     border-collapse: collapse;
+}
+ul, li {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+textarea{
+    font-family: 'Noto Sans KR', sans-serif;
+
 }

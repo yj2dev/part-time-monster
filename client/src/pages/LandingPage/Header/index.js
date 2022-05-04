@@ -79,7 +79,7 @@ const Header = () => {
         </AccountInfoSection>
       )}
 
-      {showUserMenu && <UserMenu user={user} />}
+      {showUserMenu && <UserMenu user={user.isSignin.data} />}
     </Container>
   );
 };

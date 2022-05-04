@@ -15,80 +15,84 @@ export const Title = styled.div`
   font-size: 20px;
   border: none;
   height: 64px;
-  background-color: #ffeb00;
-  &.register-company {
-    background-color: #3266cc;
-    color: #ffffff;
-  }
+  color: #ffffff;
+  background-color: #ff6f00;
 `;
 export const SubTitle = styled.div`
   font-size: 24px;
-  margin-bottom: 20px;
+  margin: 20px 0;
 `;
-export const RegisterForm = styled.div`
+export const WriteForm = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: 20px;
   color: #9f9f9f;
 
-  .radio-user-type {
-    margin: 24px 0;
-
-    label {
-      margin-right: 16px;
-    }
-    input[type="radio"] {
-      margin: 0 8px 0 16px;
-    }
-  }
-
-  .radio-register {
-    label {
-      margin-right: 16px;
-    }
-    input[type="radio"] {
-      margin: 0 8px 0 16px;
-    }
-  }
-  input[type="text"],
-  input[type="password"] {
+  input[type="text"] {
     width: 400px;
     font-size: 20px;
     border: none;
     outline: none;
-    background-color: transparent;
   }
+
   table {
     width: 640px;
     border: none;
-    margin-bottom: 24px;
   }
+
   table,
   tr {
     border: 1px solid #dedede;
   }
+
   td:first-child {
     padding-left: 12px;
   }
+
   td {
     height: 56px;
   }
+
   td span {
     font-size: 16px;
   }
+
   td select {
     font-size: 20px;
     outline: none;
     width: 200px;
     border: none;
   }
+  .description_input {
+    margin-top: 12px;
+    textarea {
+      margin: 20px;
+      width: 580px;
+      height: 300px;
+      resize: none;
+      font-size: 20px;
+      outline: none;
+      border: none;
+    }
+  }
+
+  .working_day {
+    position: relative;
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+    }
+    label {
+      margin-right: 8px;
+    }
+  }
 `;
 
-export const RegisterSubmit = styled.div`
+export const WriteSubmit = styled.div`
   width: 100%;
   position: fixed;
-  background-color: transparent;
+  background-color: #ffffff;
   bottom: 0;
   display: flex;
   justify-content: center;
@@ -101,11 +105,8 @@ export const RegisterSubmit = styled.div`
     height: 50px;
     border: none;
     outline: none;
-    background-color: #ffeb00;
-  }
-  & button.register-company {
-    background-color: #3266cc;
     color: #ffffff;
+    background-color: #ff6f00;
   }
 `;
 

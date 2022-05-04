@@ -48,10 +48,19 @@ export class UserController {
   // 로그인
   @Post('login')
   async login(
-    @Body() userLoginDto: UserLoginDto,
+    @Body('id') id: string,
+    @Body('password') password: string,
+    @Body('isCompany') isCompany: number,
+    // @Body() userLoginDto: UserLoginDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<any> {
-    const { jwt, user } = await this.authService.jwtSignin(userLoginDto);
+    console.log(id, password, isCompany);
+
+    const { jwt, user } = await this.authService.jwtSignin(
+      id,
+      password,
+      isCompany,
+    );
     res.cookie('jwt', jwt);
   }
 

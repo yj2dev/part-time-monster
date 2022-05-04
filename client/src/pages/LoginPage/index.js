@@ -20,14 +20,21 @@ const LoginPage = () => {
   function onSubmitLogin() {
     if (id.length === 0 || password.length === 0) return;
     axios
-      .post("/api/user/login", { id, password })
+      .post("/api/user/login", {
+        id,
+        password,
+        isCompany: isCompanyUser ? 1 : 0,
+      })
       .then((res) => {
         if (res.data) {
           navigate("/");
+          return;
         }
+        alert("회원정보가 일치하지 않습니다.");
       })
       .catch((err) => {
         console.log(err);
+        alert("회원정보가 일치하지 않습니다.");
       });
   }
 

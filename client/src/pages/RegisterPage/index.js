@@ -9,12 +9,15 @@ import {
 } from "./styled";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import DaumPostcode from "react-daum-postcode";
 import { useState } from "react";
 import axios from "axios";
+import Modal from "../../components/modal";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [isCompany, setIsCompany] = useState(false);
+  const [onShowSelectPostCode, setOnShowSelectPostCode] = useState(false);
 
   // 계정 정보
   const [userId, setUserId] = useState("");
@@ -33,7 +36,8 @@ const RegisterPage = () => {
   const [companyName, setCompanyName] = useState("");
   const [companyCeoName, setCompanyCeoName] = useState("");
   const [companyContact, setCompanyContact] = useState("");
-  const [companyAddress, setCompanyAddress] = useState("");
+  const [companyAddress, setCompanyAddress] =
+    useState("지역정보를 입력해주세요.");
   const [companySize, setCompanySize] = useState("스타트업");
 
   const [error, setError] = useState({ passwordCheck: false });
@@ -70,13 +74,37 @@ const RegisterPage = () => {
 
     axios
       .post("/api/user/register", payload)
-      .then((res) => {
-        console.log(res.data);
+      .then((data) => {
+        if (data.data.success) {
+          alert("회원가입이 완료되었습니다.");
+          navigate("/");
+          return;
+        }
+        alert("회원가입에 실패했습니다.");
       })
       .catch((err) => {
         console.error(err);
+        alert("회원가입에 실패했습니다.");
       });
   }
+
+  const handleComplete = (data) => {
+    let fullAddress = data.address;
+    let extraAddress = "";
+
+    if (data.addressType === "R") {
+      if (data.bname !== "") {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== "") {
+        extraAddress +=
+          extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+    }
+    setOnShowSelectPostCode(false);
+    setCompanyAddress(fullAddress);
+  };
 
   return (
     <Container>
@@ -274,14 +302,21 @@ const RegisterPage = () => {
                 </td>
               </tr>
               <tr>
-                <td>주소</td>
                 <td>
-                  <input
-                    type="text"
-                    placeholder="주소를 입력해주세요."
-                    value={companyAddress}
-                    onChange={(e) => setCompanyAddress(e.target.value)}
-                  />
+                  주소&nbsp;&nbsp;
+                  <button onClick={() => setOnShowSelectPostCode(true)}>
+                    지역정보 찾기
+                  </button>
+                </td>
+                <td>
+                  {companyAddress}
+                  <Modal
+                    show={onShowSelectPostCode}
+                    useCloseButton={false}
+                    style={{ width: "550px" }}
+                  >
+                    <DaumPostcode onComplete={handleComplete} />
+                  </Modal>
                 </td>
               </tr>
               <tr>
