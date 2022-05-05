@@ -11,9 +11,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/user/setting" element={<JobPostWritePage />}></Route>
-          <Route path="/user/setting" element={<JobPostWritePage />}></Route>
-          <Route path="/user/setting" element={<JobPostWritePage />}></Route>
+          {/*<Route path="/user/setting" element={<JobPostWritePage />}></Route>*/}
 
           <Route path="/jobpost/write" element={<JobPostWritePage />}></Route>
           <Route path="/register" element={<RegisterPage />}></Route>

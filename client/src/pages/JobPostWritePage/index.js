@@ -9,54 +9,81 @@ import {
 } from "./styled";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
-
+import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 
 const JobPostWritePage = () => {
   const navigate = useNavigate();
 
-  const [currentDate, setCurrentDate] = useState(
-    new Date().toISOString().substr(0, 10).replaceAll("-", "/")
-  );
-  const [startDate, setStartDate] = useState(new Date());
-
   // 근무 조건
   const [workingPeriod, setWorkingPeriod] = useState("");
   const [workingDay, setWorkingDay] = useState("");
+
+  const workingDayList = useRef(["월", "화", "수", "목", "금", "토", "일"]);
   const [workingStartTime, setWorkingStartTime] = useState("");
   const [workingEndTime, setWorkingEndTime] = useState("");
-  const [pay, setPay] = useState("");
-  const [payType, setPayType] = useState("");
+  const [pay, setPay] = useState(9160);
+  const [payType, setPayType] = useState("시급");
+  const payTypeList = useRef(["시급", "주급", "월급", "건당", "상의후 결정"]);
 
   // 자격 조건
-  const [userName, setUserName] = useState("");
-  const [userBirth, setUserBirth] = useState("");
-  const [userIsWoman, setUserIsWoman] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
-  const [userPhone, setUserPhone] = useState("");
+  const [sex, setSex] = useState("");
+  const sexList = useRef(["무관", "남자", "여자"]);
+  const [age, setAge] = useState("");
+  const ageList = useRef(["무관", "성인", "20대", "30대", "40대", "50대 이상"]);
+  const [education, setEducation] = useState(false);
+  const educationList = useRef(["무관", "중졸", "고졸", "대졸"]);
 
   // 모집 조건
-  const [companyNumber, setCompanyNumber] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [companyCeoName, setCompanyCeoName] = useState("");
-  const [companyContact, setCompanyContact] = useState("");
-  const [companyAddress, setCompanyAddress] =
-    useState("지역정보를 입력해주세요.");
-  const [companySize, setCompanySize] = useState("스타트업");
+  const [recruitNumber, setRecruitNumber] = useState("");
+  // const [recruitStartAt, setRecruitStartAt] = useState(
+  //   moment().format("YYYY-MM-DD")
+  // );
+  const [recruitStartAt, setRecruitStartAt] = useState(
+    moment().format("YYYY-MM-DD")
+  );
 
-  const onChangeDate = (date) => {
-    const nowDate = new Date();
-    console.log(nowDate);
-    console.log("date >> ", date);
+  const [recruitEndAt, setRecruitEndAt] = useState(new Date());
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const onChangeWorkingDay = (e) => {
+    console.log(e.target.value);
+    console.log(e.target.checked);
   };
 
-  function onSubmitWrite() {
-    const payload = {};
+  function getFormatDate(date) {
+    let year = date.getFullYear();
+    let month = 1 + date.getMonth();
+    month = month >= 10 ? month : "0" + month;
+    let day = date.getDate();
+    day = day >= 10 ? day : "0" + day;
+    return `${year}-${month}-${day}`;
+  }
 
-    console.log("paylaod >> ", payload);
+  function onSubmitWrite() {
+    console.log("format >> ", getFormatDate(recruitEndAt));
+
+    const payload = {
+      workingPeriod,
+      workingDay,
+      workingStartTime,
+      workingEndTime,
+      pay,
+      payType,
+      sex,
+      age,
+      education,
+      recruitNumber,
+      recruitStartAt,
+      recruitEndAt,
+      description,
+    };
+
+    console.log("payload >> ", payload);
 
     axios
       .post("/api/user/register", payload)
@@ -89,44 +116,53 @@ const JobPostWritePage = () => {
           <tr>
             <td width="200px">근무기간</td>
             <td>
-              <input type="text" placeholder="EX) 15일, 1달, 3달" />
+              <input
+                type="text"
+                placeholder="EX) 15일, 1달, 3달"
+                value={workingPeriod}
+                onChange={(e) => setWorkingPeriod(e.target.value)}
+              />
             </td>
           </tr>
           <tr>
             <td>근무요일</td>
             <td className="working_day">
-              <input type="checkbox" id="monday" />
-              <label htmlFor="monday">월</label>
-
-              <input type="checkbox" id="tuesday" />
-              <label htmlFor="tuesday">화</label>
-
-              <input type="checkbox" id="wednesday" />
-              <label htmlFor="wednesday">수</label>
-
-              <input type="checkbox" id="thursday" />
-              <label htmlFor="thursday">목</label>
-
-              <input type="checkbox" id="friday" />
-              <label htmlFor="friday">금</label>
-
-              <input type="checkbox" id="saturday" />
-              <label htmlFor="saturday">토</label>
-
-              <input type="checkbox" id="sunday" />
-              <label htmlFor="sunday">일</label>
+              {workingDayList.current.map((item) => (
+                <>
+                  <input
+                    type="checkbox"
+                    id={item}
+                    value={item}
+                    onClick={onChangeWorkingDay}
+                  />
+                  <label htmlFor={item}>{item}</label>
+                </>
+              ))}
             </td>
           </tr>
           <tr>
             <td>근무시간</td>
             <td>
-              <input type="text" placeholder="EX) 09:00 ~ 12:30" />
+              <input
+                type="text"
+                placeholder="EX) 09:00 ~ 12:30"
+                value={workingPeriod}
+                onChange={(e) => setWorkingPeriod(e.target.value)}
+              />
             </td>
           </tr>
           <tr>
             <td>급여</td>
-            <td>
-              <input type="text" placeholder="EX) 9160" />
+            <td className="pay">
+              <select
+                value={payType}
+                onChange={(e) => setPayType(e.target.value)}
+              >
+                {payTypeList.current.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
+              </select>
+              <input type="text" placeholder="EX) 9160" /> 원
             </td>
           </tr>
         </table>
@@ -136,19 +172,34 @@ const JobPostWritePage = () => {
           <tr>
             <td width="200px">성별</td>
             <td>
-              <input type="text" placeholder="EX) 무관" />
+              <select value={sex} onChange={(e) => setSex(e.target.value)}>
+                {sexList.current.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
+              </select>
             </td>
           </tr>
           <tr>
             <td>연령</td>
             <td>
-              <input type="text" placeholder="EX) 무관" />
+              <select value={age} onChange={(e) => setAge(e.target.value)}>
+                {ageList.current.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
+              </select>
             </td>
           </tr>
           <tr>
             <td>학력</td>
             <td>
-              <input type="text" placeholder="EX) 무관" />
+              <select
+                value={education}
+                onChange={(e) => setEducation(e.target.value)}
+              >
+                {educationList.current.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
+              </select>
             </td>
           </tr>
         </table>
@@ -157,16 +208,35 @@ const JobPostWritePage = () => {
         <table>
           <tr>
             <td width="200px">모집인원</td>
-            <td>
-              <input type="text" placeholder="EX) 3명" />
+            <td className="recruit_number">
+              <input
+                type="text"
+                placeholder="EX) 3"
+                value={recruitNumber}
+                onChange={(e) => setRecruitNumber(e.target.value)}
+              />
+              명
             </td>
           </tr>
           <tr>
             <td>모집기간</td>
-            <td>
-              {/*<input type="text" placeholder="EX) 작성일로부터 30일" />*/}
-              {currentDate}
-              <DatePicker selected={startDate} onChange={onChangeDate} />
+            <td className="recruit_term">
+              <div>시작일</div>
+              {recruitStartAt}
+              <div className="recruit_end_at">
+                마감일:
+                <DatePicker
+                  selected={recruitEndAt}
+                  onChange={(date) => {
+                    if (new Date() > date) {
+                      alert("마감일은 시작일보다 이전일 수 없습니다.");
+                      return;
+                    }
+                    setRecruitEndAt(date);
+                  }}
+                  dateFormat="yyyy-MM-dd"
+                />
+              </div>
             </td>
           </tr>
           <tr>

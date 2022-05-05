@@ -34,6 +34,7 @@ export const WriteForm = styled.div`
     font-size: 20px;
     border: none;
     outline: none;
+    background-color: transparent;
   }
 
   table {
@@ -64,9 +65,29 @@ export const WriteForm = styled.div`
     width: 200px;
     border: none;
   }
+  .pay {
+    display: flex;
+    width: 200px;
+    align-items: center;
+    input {
+      width: 150px;
+    }
+  }
+  select {
+    margin-right: 24px;
+    background-color: transparent;
+  }
+  .recruit_number {
+    display: flex;
+    align-items: center;
+    input {
+      width: 50px;
+    }
+  }
   .description_input {
     margin-top: 12px;
     textarea {
+      background-color: transparent;
       margin: 20px;
       width: 580px;
       height: 300px;
@@ -80,6 +101,7 @@ export const WriteForm = styled.div`
   .working_day {
     position: relative;
     input[type="checkbox"] {
+      background-color: transparent;
       width: 16px;
       height: 16px;
     }
@@ -87,12 +109,18 @@ export const WriteForm = styled.div`
       margin-right: 8px;
     }
   }
+  .recruit_term {
+    padding: 12px 0;
+  }
+  .recruit_end_at {
+    padding-top: 12px;
+  }
 `;
 
 export const WriteSubmit = styled.div`
   width: 100%;
   position: fixed;
-  background-color: #ffffff;
+  background-color: #f1f2f6;
   bottom: 0;
   display: flex;
   justify-content: center;

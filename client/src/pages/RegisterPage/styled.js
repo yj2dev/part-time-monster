@@ -88,7 +88,7 @@ export const RegisterForm = styled.div`
 export const RegisterSubmit = styled.div`
   width: 100%;
   position: fixed;
-  background-color: transparent;
+  background-color: #f1f2f6;
   bottom: 0;
   display: flex;
   justify-content: center;
