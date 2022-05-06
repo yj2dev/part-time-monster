@@ -1,4 +1,40 @@
-import { Controller } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseFilters,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guard/jwt.guard';
+import { JobPostRequestDto } from './dto/job-post.request.dto';
+import { GetUser } from '../common/get-user';
+import { JobPostService } from './job-post.service';
+import { User } from '../entities/User';
+import { HttpExceptionFilter } from '../http-exception.filter';
+import { SuccessInterceptor } from '../common/interceptor/success.interceptor';
+import { JobPost } from '../entities/JobPost';
 
-@Controller('job-post')
-export class JobPostController {}
+@UseFilters(HttpExceptionFilter)
+@UseInterceptors(SuccessInterceptor)
+@Controller('api/job-post')
+export class JobPostController {
+  constructor(private readonly jobPostService: JobPostService) {}
+
+  @Get('all')
+  async getAllJobPost(): Promise<JobPost[]> {
+    return this.jobPostService.getAllJobPost();
+  }
+
+  @Post('create')
+  @UseGuards(JwtAuthGuard)
+  async createJobPost(
+    @GetUser() user: User,
+    @Body() jobPostRequestDto: JobPostRequestDto,
+  ) {
+    console.log('user >> ', user);
+    console.log('jobPostRequestDto >> ', jobPostRequestDto);
+    return await this.jobPostService.createJobPost(user, jobPostRequestDto);
+  }
+}

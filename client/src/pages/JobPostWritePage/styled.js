@@ -97,7 +97,14 @@ export const WriteForm = styled.div`
       border: none;
     }
   }
-
+  .working_time {
+    select {
+      width: 70px;
+      padding: 0px;
+      margin: 0px;
+      margin-right: 6px;
+    }
+  }
   .working_day {
     position: relative;
     input[type="checkbox"] {

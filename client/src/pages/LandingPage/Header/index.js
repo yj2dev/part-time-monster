@@ -18,7 +18,6 @@ const Header = () => {
 
   const user = useSelector((state) => state.user);
 
-  console.log("user >> ", user);
   const [showAccountInfo, setShowAccountInfo] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 

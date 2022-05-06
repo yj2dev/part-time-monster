@@ -12,8 +12,6 @@ const UserMenu = ({ user }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log("UserMenu user >> ", user);
-
   function onClickLogout() {
     axios.get("/api/user/logout").then(({ data }) => {
       if (data.success) {

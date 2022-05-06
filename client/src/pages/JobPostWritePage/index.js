@@ -21,27 +21,36 @@ const JobPostWritePage = () => {
   // 근무 조건
   const [workingPeriod, setWorkingPeriod] = useState("");
   const [workingDay, setWorkingDay] = useState("");
-
   const workingDayList = useRef(["월", "화", "수", "목", "금", "토", "일"]);
+  const isWorkingDay = useRef(Array.from({ length: 7 }, () => false));
   const [workingStartTime, setWorkingStartTime] = useState("");
+  const createTimeList = () => {
+    return Array.from({ length: 48 }, (_, i) => {
+      i *= 30;
+      const hour = parseInt(i / 60).toString();
+      const fHour = hour < 10 ? `0${hour}` : hour;
+      const min = (i % 60).toString();
+      const fMin = min < 10 ? `0${min}` : min;
+      return `${fHour}:${fMin}`;
+    });
+  };
+
+  const workingTimeList = useRef(createTimeList());
   const [workingEndTime, setWorkingEndTime] = useState("");
   const [pay, setPay] = useState(9160);
   const [payType, setPayType] = useState("시급");
   const payTypeList = useRef(["시급", "주급", "월급", "건당", "상의후 결정"]);
 
   // 자격 조건
-  const [sex, setSex] = useState("");
+  const [sex, setSex] = useState("무관");
   const sexList = useRef(["무관", "남자", "여자"]);
-  const [age, setAge] = useState("");
+  const [age, setAge] = useState("무관");
   const ageList = useRef(["무관", "성인", "20대", "30대", "40대", "50대 이상"]);
-  const [education, setEducation] = useState(false);
+  const [education, setEducation] = useState("무관");
   const educationList = useRef(["무관", "중졸", "고졸", "대졸"]);
 
   // 모집 조건
   const [recruitNumber, setRecruitNumber] = useState("");
-  // const [recruitStartAt, setRecruitStartAt] = useState(
-  //   moment().format("YYYY-MM-DD")
-  // );
   const [recruitStartAt, setRecruitStartAt] = useState(
     moment().format("YYYY-MM-DD")
   );
@@ -51,22 +60,31 @@ const JobPostWritePage = () => {
   const [description, setDescription] = useState("");
 
   const onChangeWorkingDay = (e) => {
-    console.log(e.target.value);
-    console.log(e.target.checked);
+    const dayArr = workingDayList;
+    const findIndex = dayArr.current.findIndex((v) => v === e.target.value);
+
+    if (e.target.checked) isWorkingDay.current[findIndex] = true;
+    else isWorkingDay.current[findIndex] = false;
+
+    let resultWorkingDay = "";
+    isWorkingDay.current.forEach((day, i) => {
+      if (day) {
+        resultWorkingDay += `${workingDayList.current[i]}`;
+      }
+    });
+    setWorkingDay(resultWorkingDay);
   };
 
-  function getFormatDate(date) {
+  const getFormatDate = (date) => {
     let year = date.getFullYear();
     let month = 1 + date.getMonth();
     month = month >= 10 ? month : "0" + month;
     let day = date.getDate();
     day = day >= 10 ? day : "0" + day;
     return `${year}-${month}-${day}`;
-  }
+  };
 
   function onSubmitWrite() {
-    console.log("format >> ", getFormatDate(recruitEndAt));
-
     const payload = {
       workingPeriod,
       workingDay,
@@ -79,25 +97,27 @@ const JobPostWritePage = () => {
       education,
       recruitNumber,
       recruitStartAt,
-      recruitEndAt,
+      recruitEndAt: getFormatDate(recruitEndAt),
+      title,
       description,
     };
 
     console.log("payload >> ", payload);
 
     axios
-      .post("/api/user/register", payload)
-      .then((data) => {
-        if (data.data.success) {
-          alert("회원가입이 완료되었습니다.");
+      .post("/api/job-post/create", payload)
+      .then(({ data }) => {
+        console.log("data >> ", data);
+        if (data.success) {
+          alert("채용게시글이 작성되었습니다..");
           navigate("/");
           return;
         }
-        alert("회원가입에 실패했습니다.");
+        alert("채용게시글 작성에 실패했습니다.\n잠시후에 다시 시도해주세요");
       })
       .catch((err) => {
         console.error(err);
-        alert("회원가입에 실패했습니다.");
+        alert("채용게시글 작성에 실패했습니다.\n잠시후에 다시 시도해주세요");
       });
   }
 
@@ -142,13 +162,25 @@ const JobPostWritePage = () => {
           </tr>
           <tr>
             <td>근무시간</td>
-            <td>
-              <input
-                type="text"
-                placeholder="EX) 09:00 ~ 12:30"
-                value={workingPeriod}
-                onChange={(e) => setWorkingPeriod(e.target.value)}
-              />
+            <td className="working_time">
+              <select
+                value={workingStartTime}
+                onChange={(e) => setWorkingStartTime(e.target.value)}
+              >
+                {workingTimeList.current.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
+              </select>
+              에서
+              <select
+                value={workingEndTime}
+                onChange={(e) => setWorkingEndTime(e.target.value)}
+              >
+                {workingTimeList.current.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
+              </select>
+              까지
             </td>
           </tr>
           <tr>
@@ -242,7 +274,12 @@ const JobPostWritePage = () => {
           <tr>
             <td>제목</td>
             <td>
-              <input type="text" placeholder="제목을 입력해주세요" />
+              <input
+                type="text"
+                placeholder="제목을 입력해주세요"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </td>
           </tr>
         </table>
@@ -252,7 +289,11 @@ const JobPostWritePage = () => {
             <td>상세내용</td>
           </tr>
           <tr>
-            <textarea placeholder="상세내용을 입력해주세요" />
+            <textarea
+              placeholder="상세내용을 입력해주세요"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </tr>
         </table>
 
