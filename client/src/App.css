@@ -30,7 +30,10 @@ ul, li {
     padding: 0px;
     list-style: none;
 }
-textarea{
+textarea {
     font-family: 'Noto Sans KR', sans-serif;
 
+}
+a {
+    text-decoration: none;
 }

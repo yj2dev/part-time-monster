@@ -84,7 +84,7 @@ const UserMenu = ({ user }) => {
           <tr className="my-menu">
             <td
               className="my-menu-item"
-              onClick={() => navigate("/jobpost/write")}
+              onClick={() => navigate("/post/write")}
             >
               <IoHeartCircleOutline
                 style={{

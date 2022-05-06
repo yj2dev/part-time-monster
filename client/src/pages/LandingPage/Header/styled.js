@@ -13,6 +13,7 @@ export const Container = styled.div`
   box-shadow: 0px 5px 5px 2px #c1c2c6;
   position: relative;
   font-family: "Jua", sans-serif;
+  z-index: 100;
 `;
 
 export const Logo = styled.div`
