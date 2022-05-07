@@ -1,10 +1,13 @@
 import React from "react";
-import { SearchContainer, SearchMessage } from "./styled";
-import { useEffect, useState, useRef } from "react";
+import {
+  SearchContainer,
+  JobPostWrapper,
+  SupportButton,
+  TotalCount,
+} from "./styled";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Header from "../../Layouts/Header";
-import { JobPostWrapper, SupportButton } from "../LandingPage/styled";
 import getSummaryAddress from "../../utils/getSummaryAddress";
 import {
   AccountInfoSection,
@@ -149,8 +152,9 @@ const SearchPage = () => {
         {showUserMenu && <UserMenu user={user.isSignin.data} />}
       </Container>
 
-      {/*<Header />*/}
-      {/*<SearchMessage>총 {post.length}건의 알바가 있어요.</SearchMessage>*/}
+      <TotalCount>
+        총 <span>{post.length}</span>건의 알바가 있어요 😃
+      </TotalCount>
       <SearchContainer>
         {post &&
           post.map((v) => (

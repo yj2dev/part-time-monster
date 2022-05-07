@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Company } from '../entities/Company';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { JobPostRepository } from './job-post.repository';
 import { JobPostRequestDto } from './dto/job-post.request.dto';
 import { User } from '../entities/User';
@@ -12,6 +12,18 @@ import { JobPostLike } from '../entities/JobPostLike';
 @Injectable()
 export class JobPostService {
   constructor(private readonly jobPostRepository: JobPostRepository) {}
+
+  async deleteSupport(supportId: string): Promise<DeleteResult> {
+    return await this.jobPostRepository.deleteSupport(parseInt(supportId));
+  }
+
+  // 유저 아이디로 지원한 채용게시물 수정
+  async updateSupport(supportId: string, content): Promise<JobPostSupport> {
+    return await this.jobPostRepository.updateSupport(
+      parseInt(supportId),
+      content,
+    );
+  }
 
   async findFavoriteById(userId: string): Promise<JobPostLike[]> {
     return await this.jobPostRepository.findFavoriteById(userId);

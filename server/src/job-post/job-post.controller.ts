@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
+  Patch,
   Post,
   UseFilters,
   UseGuards,
@@ -18,12 +20,32 @@ import { SuccessInterceptor } from '../common/interceptor/success.interceptor';
 import { JobPost } from '../entities/JobPost';
 import { JobPostLike } from '../entities/JobPostLike';
 import { JobPostSupport } from '../entities/JobPostSupport';
+import { DeleteResult } from 'typeorm';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
 @Controller('api/job-post')
 export class JobPostController {
   constructor(private readonly jobPostService: JobPostService) {}
+
+  @Delete('/:supportId/support')
+  @UseGuards(JwtAuthGuard)
+  async deleteSupport(
+    @Param('supportId') supportId: string,
+  ): Promise<DeleteResult> {
+    console.log('delete support >> ', supportId);
+    return await this.jobPostService.deleteSupport(supportId);
+  }
+
+  @Patch('/:supportId/support')
+  @UseGuards(JwtAuthGuard)
+  async updateSupport(
+    @Param('supportId') supportId: string,
+    @Body('content') content: string,
+  ): Promise<JobPostSupport> {
+    // console.log("update support >> ", supportId, content);
+    return await this.jobPostService.updateSupport(supportId, content);
+  }
 
   @Get('/all/support')
   @UseGuards(JwtAuthGuard)

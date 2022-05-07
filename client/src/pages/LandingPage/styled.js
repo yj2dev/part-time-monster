@@ -41,7 +41,8 @@ export const JobPostWrapper = styled.button`
   .pay {
     text-align: left;
     font-size: 18px;
-    color: #7c818c;
+    color: #000000;
+    font-weight: 800;
 
     span {
       color: #e15756;

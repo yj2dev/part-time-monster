@@ -5,7 +5,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Column, Like, PrimaryGeneratedColumn, Repository } from 'typeorm';
+import {
+  Column,
+  DeleteResult,
+  Like,
+  PrimaryGeneratedColumn,
+  Repository,
+} from 'typeorm';
 import { JobPost } from '../entities/JobPost';
 import { JobPostSupport } from '../entities/JobPostSupport';
 import { JobPostLike } from '../entities/JobPostLike';
@@ -24,13 +30,32 @@ export class JobPostRepository {
 
   // 유저 아이디로 즐겨찾는 게시물 조회
   async findFavoriteById(userId: string): Promise<JobPostLike[]> {
-    const result = this.jobPostLikeRepository.find({ fromUserId: userId });
+    const result = await this.jobPostLikeRepository.find({
+      fromUserId: userId,
+    });
     return result;
   }
 
   // 유저 아이디로 지원한 채용게시물 조회
   async findSupportPostById(userId: string): Promise<JobPostSupport[]> {
     const result = this.jobPostSupportRepository.find({ fromUserId: userId });
+    return result;
+  }
+
+  // 유저 아이디로 지원한 채용게시물 삭제
+  async deleteSupport(supportId: number): Promise<DeleteResult> {
+    const result = await this.jobPostSupportRepository.delete({
+      id: supportId,
+    });
+    return result;
+  }
+
+  // 유저 아이디로 지원한 채용게시물 수정
+  async updateSupport(supportId: number, content): Promise<JobPostSupport> {
+    const result = await this.jobPostSupportRepository.save({
+      id: supportId,
+      content,
+    });
     return result;
   }
 

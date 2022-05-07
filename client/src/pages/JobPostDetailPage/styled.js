@@ -200,9 +200,6 @@ export const SupportModal = styled.div`
     border: none;
     outline: none;
     background-color: #ffeb00;
-    //display: flex;
-    //justify-content: center;
-    //align-items: center;
   }
 `;
 export const SupportModalCloseBtn = styled.div`

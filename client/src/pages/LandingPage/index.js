@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import getSummaryAddress from "../../utils/getSummaryAddress";
+import { intOfKr } from "../../utils/currency";
 
 const Contents = () => {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const Contents = () => {
               {getSummaryAddress(v.fromCompany.address)}
             </div>
             <div className="pay">
-              <span>{v.payType}</span> {v.pay}
+              <span>{v.payType}</span> {intOfKr(v.pay)}원
             </div>
             <SupportButton value={v.id} onClick={onClickDetail}>
               상세보기

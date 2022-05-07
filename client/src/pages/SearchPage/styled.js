@@ -3,8 +3,15 @@ import styled from "styled-components";
 export const SearchContainer = styled.div`
   padding: 24px;
 `;
-export const SearchMessage = styled.div`
-  border: 1px solid black;
+
+export const TotalCount = styled.div`
+  font-weight: 800;
+  font-size: 24px;
+  margin: 24px 0 12px 28px;
+
+  span {
+    color: #4b4bff;
+  }
 `;
 export const JobPostWrapper = styled.button`
   border: none;
