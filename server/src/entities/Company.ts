@@ -1,6 +1,5 @@
 import { Column, Entity, OneToMany } from "typeorm";
 import { JobPost } from "./JobPost";
-import { LikeCompany } from "./LikeCompany";
 import { User } from "./User";
 
 @Entity("company", { schema: "part_time_monster" })
@@ -25,9 +24,6 @@ export class Company {
 
   @OneToMany(() => JobPost, (jobPost) => jobPost.fromCompany)
   jobPosts: JobPost[];
-
-  @OneToMany(() => LikeCompany, (likeCompany) => likeCompany.toCompany)
-  likeCompanies: LikeCompany[];
 
   @OneToMany(() => User, (user) => user.toCompany)
   users: User[];

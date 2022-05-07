@@ -4,7 +4,7 @@ import { User } from './src/entities/User';
 import { Company } from './src/entities/Company';
 import { JobPost } from './src/entities/JobPost';
 import { JobPostSupport } from './src/entities/JobPostSupport';
-import { LikeCompany } from './src/entities/LikeCompany';
+import { JobPostLike } from './src/entities/JobPostLike';
 
 dotenv.config();
 const config: TypeOrmModuleOptions = {
@@ -14,7 +14,7 @@ const config: TypeOrmModuleOptions = {
   username: process.env.MYSQL_USERNAME,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
-  entities: [User, Company, JobPost, JobPostSupport, LikeCompany],
+  entities: [User, Company, JobPost, JobPostSupport, JobPostLike],
   logging: true,
   synchronize: true,
   keepConnectionAlive: true,

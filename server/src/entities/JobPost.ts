@@ -7,12 +7,13 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { User } from './User';
 import { Company } from './Company';
+import { User } from './User';
+import { JobPostLike } from './JobPostLike';
 import { JobPostSupport } from './JobPostSupport';
 
-@Index('from_user_id', ['fromUserId'], {})
 @Index('from_company_id', ['fromCompanyId'], {})
+@Index('from_user_id', ['fromUserId'], {})
 @Entity('job_post', { schema: 'part_time_monster' })
 export class JobPost {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
@@ -72,6 +73,14 @@ export class JobPost {
   })
   createdAt: Date;
 
+  @ManyToOne(() => Company, (company) => company.jobPosts, {
+    eager: true,
+    onDelete: 'NO ACTION',
+    onUpdate: 'NO ACTION',
+  })
+  @JoinColumn([{ name: 'from_company_id', referencedColumnName: 'number' }])
+  fromCompany: Company;
+
   @ManyToOne(() => User, (user) => user.jobPosts, {
     eager: true,
     onDelete: 'NO ACTION',
@@ -80,13 +89,8 @@ export class JobPost {
   @JoinColumn([{ name: 'from_user_id', referencedColumnName: 'id' }])
   fromUser: User;
 
-  @ManyToOne(() => Company, (company) => company.jobPosts, {
-    eager: true,
-    onDelete: 'NO ACTION',
-    onUpdate: 'NO ACTION',
-  })
-  @JoinColumn([{ name: 'from_company_id', referencedColumnName: 'number' }])
-  fromCompany: Company;
+  @OneToMany(() => JobPostLike, (jobPostLike) => jobPostLike.toJobPost)
+  jobPostLikes: JobPostLike[];
 
   @OneToMany(() => JobPostSupport, (jobPostSupport) => jobPostSupport.toJobPost)
   jobPostSupports: JobPostSupport[];

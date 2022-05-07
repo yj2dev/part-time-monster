@@ -1,9 +1,19 @@
-import { Container, CloseIcon, JobPostWrapper } from "./styled";
+import {
+  Container,
+  CloseIcon,
+  JobPostWrapper,
+  SupportSubmit,
+  Space,
+  SupportModal,
+  SupportModalCloseBtn,
+  Smoke,
+} from "./styled";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowBack, IoIosClose } from "react-icons/io";
 import { IoCalendarClearOutline, IoCalendarOutline } from "react-icons/io5";
+import { RiSendPlaneFill } from "react-icons/ri";
 import { BsClock } from "react-icons/bs";
 import {
   AiFillStar,
@@ -11,14 +21,21 @@ import {
   AiOutlineDollarCircle,
 } from "react-icons/ai";
 import { dateFormat, timeFormat } from "../../utils/time";
-import { intOfKr } from "../../utils/currency";
+import { intOfKr, phoneFormat } from "../../utils/currency";
 
 const JobPostDetailPage = () => {
   const navigate = useNavigate();
   const { postId } = useParams();
   const [post, setPost] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [supportContent, setSupportContent] = useState("");
+  const [showSupportModal, setShowSupportModal] = useState(false);
 
   useEffect(() => {
+    getPostDetail();
+  }, []);
+
+  function getPostDetail() {
     axios
       .get(`/api/job-post/${postId}/detail`)
       .then(({ data }) => {
@@ -29,13 +46,45 @@ const JobPostDetailPage = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }
 
+  function onClickFavorite() {
+    console.log(postId);
+
+    return;
+    axios
+      .get(`/api/job-post/${postId}/favorite`)
+      .then(({ data }) => {
+        if (data.success) setIsFavorite(true);
+        else setIsFavorite(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function onClickSupport() {
+    if (!supportContent) return;
+
+    axios
+      .post(`/api/job-post/${postId}/support`, { content: supportContent })
+      .then(({ data }) => {
+        if (data.success) {
+          alert("알바지원에 성공했습니다.");
+        } else {
+          alert("알바지원에 실패했습니다.\n잠시 후 다시 시도해주세요.");
+        }
+      })
+      .catch((err) => {
+        alert("알바지원에 실패했습니다.\n잠시 후 다시 시도해주세요.");
+        console.log(err);
+      });
+  }
   return (
     <Container>
       <div className="detail_page_title">채용정보</div>
-      <div className="favorite">
-        {!false ? (
+      <div className="favorite" onClick={onClickFavorite}>
+        {!isFavorite ? (
           <AiOutlineStar />
         ) : (
           <AiFillStar style={{ color: "#ffb300" }} />
@@ -161,11 +210,31 @@ const JobPostDetailPage = () => {
             </tr>
             <tr>
               <td>연락처</td>
-              <td>{post && post.fromUser.phone}</td>
+              <td>{post && phoneFormat(post.fromUser.phone)}</td>
             </tr>
           </table>
         </div>
       </JobPostWrapper>
+      <Space />
+      <SupportSubmit>
+        <button onClick={() => setShowSupportModal((prev) => !prev)}>
+          지원하기
+        </button>
+      </SupportSubmit>
+      <SupportModal id={showSupportModal && "active"}>
+        <SupportModalCloseBtn onClick={() => setShowSupportModal(false)}>
+          <IoIosClose />
+        </SupportModalCloseBtn>
+        <RiSendPlaneFill />
+        <textarea
+          value={supportContent}
+          onChange={(e) => setSupportContent(e.target.value)}
+        ></textarea>
+        <button className="support_submit" onClick={onClickSupport}>
+          작성완료
+        </button>
+      </SupportModal>
+      {showSupportModal && <Smoke />}
     </Container>
   );
 };

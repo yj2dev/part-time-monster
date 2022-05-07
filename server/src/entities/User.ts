@@ -8,8 +8,8 @@ import {
   OneToOne,
 } from "typeorm";
 import { JobPost } from "./JobPost";
+import { JobPostLike } from "./JobPostLike";
 import { JobPostSupport } from "./JobPostSupport";
-import { LikeCompany } from "./LikeCompany";
 import { Company } from "./Company";
 
 @Index("to_company_id", ["toCompanyId"], {})
@@ -49,11 +49,11 @@ export class User {
   @OneToMany(() => JobPost, (jobPost) => jobPost.fromUser)
   jobPosts: JobPost[];
 
-  @OneToMany(() => JobPostSupport, (jobPostSupport) => jobPostSupport.fromUser)
-  jobPostSupports: JobPostSupport[];
+  @OneToOne(() => JobPostLike, (jobPostLike) => jobPostLike.fromUser)
+  jobPostLike: JobPostLike;
 
-  @OneToOne(() => LikeCompany, (likeCompany) => likeCompany.fromUser)
-  likeCompany: LikeCompany;
+  @OneToOne(() => JobPostSupport, (jobPostSupport) => jobPostSupport.fromUser)
+  jobPostSupport: JobPostSupport;
 
   @ManyToOne(() => Company, (company) => company.users, {
     onDelete: "NO ACTION",

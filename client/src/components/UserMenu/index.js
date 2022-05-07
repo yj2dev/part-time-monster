@@ -7,6 +7,7 @@ import { IoHeartCircleOutline, IoDocumentTextOutline } from "react-icons/io5";
 import { MdArrowForwardIos } from "react-icons/md";
 
 import Gravatar from "react-gravatar";
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 
 const UserMenu = ({ user }) => {
   const dispatch = useDispatch();
@@ -56,7 +57,7 @@ const UserMenu = ({ user }) => {
         {!user.isCompany ? (
           <tr className="my-menu">
             <td className="my-menu-item">
-              <IoHeartCircleOutline
+              <AiOutlineStar
                 style={{
                   color: "#000000",
                   background: "#ffffff",

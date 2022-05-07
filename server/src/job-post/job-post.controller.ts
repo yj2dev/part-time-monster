@@ -16,6 +16,7 @@ import { User } from '../entities/User';
 import { HttpExceptionFilter } from '../http-exception.filter';
 import { SuccessInterceptor } from '../common/interceptor/success.interceptor';
 import { JobPost } from '../entities/JobPost';
+import { JobPostLike } from '../entities/JobPostLike';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
@@ -23,14 +24,28 @@ import { JobPost } from '../entities/JobPost';
 export class JobPostController {
   constructor(private readonly jobPostService: JobPostService) {}
 
+  @Get('/:postId/support')
+  async createSupport(@Param('postId') postId: string): Promise<JobPost> {
+    return await this.jobPostService.getDetailJobPost(postId);
+  }
+
+  @Get('/:postId/favorite')
+  @UseGuards(JwtAuthGuard)
+  async addLike(
+    @GetUser() user: User,
+    @Param('postId') postId: string,
+  ): Promise<JobPostLike> {
+    return await this.jobPostService.addLike(user, postId);
+  }
+
   @Get('/:postId/detail')
   async getDetailJobPost(@Param('postId') postId: string): Promise<JobPost> {
-    return this.jobPostService.getDetailJobPost(postId);
+    return await this.jobPostService.getDetailJobPost(postId);
   }
 
   @Get('all')
   async getAllJobPost(): Promise<JobPost[]> {
-    return this.jobPostService.getAllJobPost();
+    return await this.jobPostService.getAllJobPost();
   }
 
   @Post('create')
