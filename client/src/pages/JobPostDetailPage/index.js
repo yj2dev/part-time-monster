@@ -264,21 +264,21 @@ const JobPostDetailPage = () => {
           <RiSendPlaneFill />
           지원하기
         </p>
-        {/*<div className="user_info">*/}
-        {/*  {user && user.isSignin && (*/}
-        {/*    <tr>*/}
-        {/*      <td width={200}>지원자 성함</td>*/}
-        {/*      <td>{user && user.isSignin.data.name}</td>*/}
-        {/*    </tr>*/}
-        {/*  )}*/}
+        <div className="user_info">
+          {user && user.isSignin && (
+            <tr>
+              <td width={200}>지원자 성함</td>
+              <td>{user && user.isSignin.data.name}</td>
+            </tr>
+          )}
 
-        {/*  {user && user.isSignin && (*/}
-        {/*    <tr>*/}
-        {/*      <td width={200}>지원자 연락처</td>*/}
-        {/*      <td>{user && phoneFormat(user?.isSignin.data.phone)}</td>*/}
-        {/*    </tr>*/}
-        {/*  )}*/}
-        {/*</div>*/}
+          {user && user.isSignin && (
+            <tr>
+              <td width={200}>지원자 연락처</td>
+              <td>{user && phoneFormat(user?.isSignin.data.phone)}</td>
+            </tr>
+          )}
+        </div>
         <div className="support_length">{supportContent.length} / 500</div>
         <textarea
           placeholder="남기실 메모를 작성해주세요."

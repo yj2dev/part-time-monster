@@ -21,14 +21,14 @@ export const Container = styled.div`
   }
   & .btn_logout {
     position: absolute;
-    top: 600px;
+    top: 380px;
     background-color: #fafbfd;
     width: 600px;
     color: #737884;
     font-size: 16px;
     font-weight: 800;
     height: 50px;
-    border-radius: 12px;
+    border-radius: 25px 25px 25px 25px;
     outline: none;
     border: none;
     cursor: pointer;
@@ -41,7 +41,7 @@ export const ServiceWrapper = styled.div`
   box-shadow: 0px 4px 5px 1px #c1c2c6;
   border-radius: 35px;
   width: 600px;
-  height: 500px;
+  height: 280px;
   background-color: #fff231;
   padding: 20px;
 

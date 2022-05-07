@@ -35,7 +35,7 @@ const UserMenu = ({ user }) => {
               <b>{user.name}</b>님&nbsp;
             </div>
             <div className="update-account-link">
-              <Link to="/account/update">
+              <Link to="/user/edit">
                 내 정보 수정
                 <MdArrowForwardIos
                   style={{
@@ -56,7 +56,10 @@ const UserMenu = ({ user }) => {
 
         {!user.isCompany ? (
           <tr className="my-menu">
-            <td className="my-menu-item">
+            <td
+              className="my-menu-item"
+              onClick={() => navigate("/post/favorite")}
+            >
               <AiOutlineStar
                 style={{
                   color: "#000000",
@@ -68,7 +71,10 @@ const UserMenu = ({ user }) => {
               />
               관심 알바
             </td>
-            <td className="my-menu-item">
+            <td
+              className="my-menu-item"
+              onClick={() => navigate("/post/support-list")}
+            >
               <IoDocumentTextOutline
                 style={{
                   color: "#000000",
@@ -98,7 +104,10 @@ const UserMenu = ({ user }) => {
               />
               채용글 작성
             </td>
-            <td className="my-menu-item">
+            <td
+              className="my-menu-item"
+              onClick={() => navigate("/post/manage")}
+            >
               <IoDocumentTextOutline
                 style={{
                   color: "#000000",
