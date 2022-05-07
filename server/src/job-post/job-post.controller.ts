@@ -17,6 +17,7 @@ import { HttpExceptionFilter } from '../http-exception.filter';
 import { SuccessInterceptor } from '../common/interceptor/success.interceptor';
 import { JobPost } from '../entities/JobPost';
 import { JobPostLike } from '../entities/JobPostLike';
+import { JobPostSupport } from '../entities/JobPostSupport';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
@@ -24,9 +25,29 @@ import { JobPostLike } from '../entities/JobPostLike';
 export class JobPostController {
   constructor(private readonly jobPostService: JobPostService) {}
 
-  @Get('/:postId/support')
-  async createSupport(@Param('postId') postId: string): Promise<JobPost> {
-    return await this.jobPostService.getDetailJobPost(postId);
+  @Get('/:keyword/search')
+  async searchByKeyword(@Param('keyword') keyword: string) {
+    return await this.jobPostService.searchByKeyword(keyword);
+  }
+
+  @Get('/:postId/favorite-check')
+  @UseGuards(JwtAuthGuard)
+  async checkLike(
+    @GetUser() user: User,
+    @Param('postId') postId: string,
+  ): Promise<JobPostLike | undefined> {
+    return await this.jobPostService.checkLike(user, postId);
+  }
+
+  @Post('/:postId/support')
+  @UseGuards(JwtAuthGuard)
+  async createSupport(
+    @GetUser() user: User,
+    @Param('postId') postId: number,
+    @Body('content') content: string,
+  ): Promise<JobPostSupport> {
+    console.log('user >> ', user);
+    return await this.jobPostService.createSupport(user.id, postId, content);
   }
 
   @Get('/:postId/favorite')

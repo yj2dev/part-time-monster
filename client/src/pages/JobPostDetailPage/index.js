@@ -22,8 +22,10 @@ import {
 } from "react-icons/ai";
 import { dateFormat, timeFormat } from "../../utils/time";
 import { intOfKr, phoneFormat } from "../../utils/currency";
+import { useSelector } from "react-redux";
 
 const JobPostDetailPage = () => {
+  const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const { postId } = useParams();
   const [post, setPost] = useState(null);
@@ -33,7 +35,23 @@ const JobPostDetailPage = () => {
 
   useEffect(() => {
     getPostDetail();
+    getUserFavorite();
   }, []);
+
+  function getUserFavorite() {
+    axios
+      .get(`/api/job-post/${postId}/favorite-check`)
+      .then(({ data }) => {
+        if (data.success && data.data) {
+          setIsFavorite(true);
+        } else {
+          setIsFavorite(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   function getPostDetail() {
     axios
@@ -49,14 +67,15 @@ const JobPostDetailPage = () => {
   }
 
   function onClickFavorite() {
-    console.log(postId);
-
-    return;
     axios
       .get(`/api/job-post/${postId}/favorite`)
       .then(({ data }) => {
-        if (data.success) setIsFavorite(true);
-        else setIsFavorite(false);
+        console.log("data >> ", data);
+        if (data.success && data.data) {
+          setIsFavorite(true);
+        } else {
+          setIsFavorite(false);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -70,13 +89,12 @@ const JobPostDetailPage = () => {
       .post(`/api/job-post/${postId}/support`, { content: supportContent })
       .then(({ data }) => {
         if (data.success) {
+          setShowSupportModal(false);
+          setSupportContent("");
           alert("알바지원에 성공했습니다.");
-        } else {
-          alert("알바지원에 실패했습니다.\n잠시 후 다시 시도해주세요.");
         }
       })
       .catch((err) => {
-        alert("알바지원에 실패했습니다.\n잠시 후 다시 시도해주세요.");
         console.log(err);
       });
   }
@@ -225,10 +243,33 @@ const JobPostDetailPage = () => {
         <SupportModalCloseBtn onClick={() => setShowSupportModal(false)}>
           <IoIosClose />
         </SupportModalCloseBtn>
-        <RiSendPlaneFill />
+        <p>
+          <RiSendPlaneFill />
+          지원하기
+        </p>
+        <div className="user_info">
+          {user && user.isSignin && (
+            <tr>
+              <td width={200}>지원자 성함</td>
+              <td>{user.isSignin.data.name}</td>
+            </tr>
+          )}
+
+          {user && user.isSignin && (
+            <tr>
+              <td width={200}>지원자 연락처</td>
+              <td>{phoneFormat(user.isSignin.data.phone)}</td>
+            </tr>
+          )}
+        </div>
+        <div className="support_length">{supportContent.length} / 500</div>
         <textarea
+          placeholder="남기실 메모를 작성해주세요."
           value={supportContent}
-          onChange={(e) => setSupportContent(e.target.value)}
+          onChange={(e) => {
+            if (e.target.value.length > 500) return;
+            setSupportContent(e.target.value);
+          }}
         ></textarea>
         <button className="support_submit" onClick={onClickSupport}>
           작성완료

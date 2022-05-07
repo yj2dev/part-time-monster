@@ -117,20 +117,29 @@ export const Smoke = styled.div`
   bottom: 0px;
   left: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.4);
 `;
 export const SupportModal = styled.div`
   z-index: 10;
   position: fixed;
   left: 0px;
-  bottom: -500px;
+  bottom: -600px;
   transition: 0.2s;
   width: 100%;
   background-color: #ffffff;
   height: 400px;
   border-radius: 25px 25px 0 0;
-  &::before {
+  padding-top: 120px;
+  display: flex;
+  justify-content: center;
+  p {
+    svg {
+      color: #ffeb00;
+      font-size: 50px;
+      margin-bottom: 12px;
+    }
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     font-size: 28px;
@@ -139,7 +148,7 @@ export const SupportModal = styled.div`
     content: "지원하기";
     position: absolute;
     background-color: #ffffff;
-    top: -75px;
+    top: -70px;
     left: calc(50% - 75px);
     border-radius: 50%;
     width: 150px;
@@ -149,10 +158,35 @@ export const SupportModal = styled.div`
   &#active {
     bottom: 0px;
   }
-
+  .user_info {
+    font-family: "Jua", sans-serif;
+    color: #979797;
+    position: absolute;
+    top: 90px;
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-left: 80px;
+    justify-content: left;
+  }
+  .support_length {
+    position: absolute;
+    font-size: 22px;
+    top: 120px;
+    font-family: "Jua", sans-serif;
+    right: 40px;
+  }
   & textarea {
     resize: none;
     width: 100%;
+    font-size: 24px;
+    outline: none;
+    border: 2px solid #dadada;
+    height: 195px;
+    margin: 50px 32px 0px 32px;
+    padding: 20px;
+    font-family: "Jua", sans-serif;
   }
   .support_submit {
     font-size: 22px;

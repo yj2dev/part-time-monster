@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Company } from '../entities/Company';
 import { Repository } from 'typeorm';
@@ -13,6 +13,10 @@ import { JobPostLike } from '../entities/JobPostLike';
 export class JobPostService {
   constructor(private readonly jobPostRepository: JobPostRepository) {}
 
+  async searchByKeyword(keyword: string) {
+    return await this.jobPostRepository.findByKeyword(keyword);
+  }
+
   async createSupport(
     userId: string,
     postId: number,
@@ -21,7 +25,20 @@ export class JobPostService {
     return await this.jobPostRepository.createSupport(userId, postId, content);
   }
 
+  async checkLike(
+    user: User,
+    postId: string,
+  ): Promise<JobPostLike | undefined> {
+    const isLike = await this.jobPostRepository.duplicateLike(
+      user.id,
+      parseInt(postId),
+    );
+    return isLike;
+  }
+
   async addLike(user: User, postId: string): Promise<JobPostLike> {
+    console.log(user.id, postId);
+
     const isLike = await this.jobPostRepository.duplicateLike(
       user.id,
       parseInt(postId),
@@ -30,22 +47,21 @@ export class JobPostService {
     console.log('isLike >> ', isLike);
 
     let likeResult = null;
+
     // 이미 즐겨찾는 게시물로 등록 했는지 확인
-    if (isLike) {
+    if (!isLike) {
       //  즐겨찾는 게시물 추가
       likeResult = await this.jobPostRepository.createLike(
-        postId,
+        user.id,
         parseInt(postId),
       );
     } else {
       //  즐겨찾는 게시물 제거
-      likeResult = await this.jobPostRepository.createLike(
-        postId,
+      likeResult = await this.jobPostRepository.deleteLike(
+        user.id,
         parseInt(postId),
       );
     }
-
-    console.log('likeResult >> ', likeResult);
 
     return likeResult;
   }

@@ -20,6 +20,14 @@ const Header = () => {
 
   const [showAccountInfo, setShowAccountInfo] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState("");
+
+  const onSubmitSearch = (e) => {
+    e.preventDefault();
+    if (!searchKeyword) return;
+    navigate(`/search?keyword=${searchKeyword}`);
+    console.log("ds");
+  };
 
   useEffect(() => {
     dispatch(authUser());
@@ -51,10 +59,16 @@ const Header = () => {
         </div>
       </Logo>
       <SearchSection>
-        <input type="text" />
-        <p>
-          <AiOutlineSearch style={{ fontSize: "24px" }} />
-        </p>
+        <form onSubmit={onSubmitSearch}>
+          <input
+            type="text"
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+          />
+          <button type="submit">
+            <AiOutlineSearch style={{ fontSize: "24px" }} />
+          </button>
+        </form>
       </SearchSection>
       {showAccountInfo && (
         <AccountInfoSection>

@@ -5,7 +5,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Column, PrimaryGeneratedColumn, Repository } from 'typeorm';
+import { Column, Like, PrimaryGeneratedColumn, Repository } from 'typeorm';
 import { JobPost } from '../entities/JobPost';
 import { JobPostSupport } from '../entities/JobPostSupport';
 import { JobPostLike } from '../entities/JobPostLike';
@@ -22,12 +22,27 @@ export class JobPostRepository {
     private jobPostLikeRepository: Repository<JobPostLike>,
   ) {}
 
+  // 단어로 알바 검색
+  async findByKeyword(keyword): Promise<JobPost[] | undefined> {
+    const result = this.jobPostRepository.find({
+      title: Like(`%${keyword}%`),
+    });
+    return result;
+  }
+
+  // 유저 아이디로 등록한 채용 게시물들 가져오기
+  async getAllSupport(userId: string): Promise<JobPostSupport[]> {
+    const result = this.jobPostSupportRepository.find({ fromUserId: userId });
+    return result;
+  }
+
+  // 채용 게시물에 지원
   async createSupport(
     userId: string,
     postId: number,
     content: string,
   ): Promise<JobPostSupport> {
-    const result = this.jobPostSupportRepository.save({
+    const result = await this.jobPostSupportRepository.save({
       fromUserId: userId,
       toJobPostId: postId,
       content,
@@ -35,11 +50,19 @@ export class JobPostRepository {
     return result;
   }
 
-  async duplicateLike(userId: string, postId: number) {
-    const result = this.jobPostRepository.findOne(postId);
+  // 이미 즐겨찾는 게시물로 등록되어 있는지 학인
+  async duplicateLike(
+    userId: string,
+    postId: number,
+  ): Promise<JobPostLike | undefined> {
+    const result = await this.jobPostLikeRepository.findOne({
+      fromUserId: userId,
+      toJobPostId: postId,
+    });
     return result;
   }
 
+  // 즐겨찾는 게시물추가
   async createLike(userId: string, postId: number): Promise<JobPostLike> {
     const result = await this.jobPostLikeRepository.save({
       fromUserId: userId,
@@ -48,6 +71,7 @@ export class JobPostRepository {
     return result;
   }
 
+  // 즐겨찾는 게시물 제거
   async deleteLike(userId: string, postId: number): Promise<void> {
     const result = await this.jobPostLikeRepository.delete({
       fromUserId: userId,
@@ -57,16 +81,19 @@ export class JobPostRepository {
     // return result;
   }
 
+  // 하나의 채용 게시물만 가져오기
   async getOnceJobPost(postId: string): Promise<JobPost> {
     const result = this.jobPostRepository.findOne(postId);
     return result;
   }
 
+  // 모든 채용 게시물 가져오기
   async getAllJobPost(): Promise<JobPost[]> {
     const result = this.jobPostRepository.find();
     return result;
   }
 
+  // 채용 게시물 등록
   async createJobPost(user: User, jobPostRequestDto: JobPostRequestDto) {
     if (!user.isCompany) {
       throw new HttpException('잘못된 접근입니다.', 401);
