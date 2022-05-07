@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   UseFilters,
   UseGuards,
@@ -21,6 +22,11 @@ import { JobPost } from '../entities/JobPost';
 @Controller('api/job-post')
 export class JobPostController {
   constructor(private readonly jobPostService: JobPostService) {}
+
+  @Get('/:postId/detail')
+  async getDetailJobPost(@Param('postId') postId: string): Promise<JobPost> {
+    return this.jobPostService.getDetailJobPost(postId);
+  }
 
   @Get('all')
   async getAllJobPost(): Promise<JobPost[]> {

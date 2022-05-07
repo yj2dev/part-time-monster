@@ -16,6 +16,11 @@ export class JobPostRepository {
     @InjectRepository(JobPost) private jobPostRepository: Repository<JobPost>,
   ) {}
 
+  async getOnceJobPost(postId: string): Promise<JobPost> {
+    const result = this.jobPostRepository.findOne(postId);
+    return result;
+  }
+
   async getAllJobPost(): Promise<JobPost[]> {
     const result = this.jobPostRepository.find();
     return result;

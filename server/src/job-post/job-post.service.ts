@@ -11,6 +11,10 @@ import { JobPost } from '../entities/JobPost';
 export class JobPostService {
   constructor(private readonly jobPostRepository: JobPostRepository) {}
 
+  async getDetailJobPost(postId: string): Promise<JobPost> {
+    return await this.jobPostRepository.getOnceJobPost(postId);
+  }
+
   async getAllJobPost(): Promise<JobPost[]> {
     return await this.jobPostRepository.getAllJobPost();
   }
