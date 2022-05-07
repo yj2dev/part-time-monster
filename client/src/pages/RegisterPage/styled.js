@@ -78,11 +78,24 @@ export const RegisterForm = styled.div`
     font-size: 16px;
   }
   td select {
+    background-color: transparent;
     font-size: 20px;
     outline: none;
     width: 200px;
     border: none;
   }
+`;
+export const PostCodeButton = styled.button`
+  color: red;
+  font-size: 16px;
+  background-color: #3266cc;
+  color: #ffffff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  margin-left: 32px;
+  //border-radius: 25px;
 `;
 
 export const RegisterSubmit = styled.div`

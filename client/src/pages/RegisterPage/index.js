@@ -1,6 +1,7 @@
 import {
   CloseIcon,
   Container,
+  PostCodeButton,
   RegisterForm,
   RegisterSubmit,
   Space,
@@ -295,7 +296,7 @@ const RegisterPage = () => {
                 <td>
                   <input
                     type="text"
-                    placeholder="연락처를 입력하세요"
+                    placeholder="연락처를 입력하세요(-제외)"
                     value={companyContact}
                     onChange={(e) => setCompanyContact(e.target.value)}
                   />
@@ -304,15 +305,16 @@ const RegisterPage = () => {
               <tr>
                 <td>
                   주소&nbsp;&nbsp;
-                  <button onClick={() => setOnShowSelectPostCode(true)}>
+                  <PostCodeButton onClick={() => setOnShowSelectPostCode(true)}>
                     지역정보 찾기
-                  </button>
+                  </PostCodeButton>
                 </td>
                 <td>
                   {companyAddress}
                   <Modal
                     show={onShowSelectPostCode}
                     useCloseButton={false}
+                    close={() => setOnShowSelectPostCode(false)}
                     style={{ width: "550px" }}
                   >
                     <DaumPostcode onComplete={handleComplete} />

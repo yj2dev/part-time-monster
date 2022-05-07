@@ -194,7 +194,13 @@ const JobPostWritePage = () => {
                   <option value={item}>{item}</option>
                 ))}
               </select>
-              <input type="text" placeholder="EX) 9160" /> 원
+              <input
+                type="text"
+                placeholder="EX) 9160"
+                value={pay}
+                onChange={(e) => setPay(e.target.value)}
+              />
+              원
             </td>
           </tr>
         </table>

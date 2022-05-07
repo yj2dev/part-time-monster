@@ -15,8 +15,6 @@ import { HttpExceptionFilter } from '../http-exception.filter';
 import { SuccessInterceptor } from '../common/interceptor/success.interceptor';
 
 @Injectable()
-@UseFilters(HttpExceptionFilter)
-@UseInterceptors(SuccessInterceptor)
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,

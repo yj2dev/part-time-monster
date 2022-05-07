@@ -5,11 +5,12 @@ export const Container = styled.div`
   position: absolute;
   top: 0px;
   width: 100%;
-  height: 300px;
+  height: 200px;
   font-size: 32px;
   border: none;
   border-radius: 0 0 50px 50px;
-  box-shadow: 0px 8px 5px 1px #c1c2c6;
+  box-shadow: 0px 5px 5px 2px #c1c2c6;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,9 +21,9 @@ export const Container = styled.div`
   }
   & .btn_logout {
     position: absolute;
-    top: 700px;
+    top: 600px;
     background-color: #fafbfd;
-    width: 120px;
+    width: 600px;
     color: #737884;
     font-size: 16px;
     font-weight: 800;

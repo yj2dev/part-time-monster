@@ -89,7 +89,11 @@ export class JobPostRepository {
 
   // 모든 채용 게시물 가져오기
   async getAllJobPost(): Promise<JobPost[]> {
-    const result = this.jobPostRepository.find();
+    const result = this.jobPostRepository.find({
+      order: {
+        createdAt: 'DESC',
+      },
+    });
     return result;
   }
 

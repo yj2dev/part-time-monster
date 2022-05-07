@@ -235,33 +235,50 @@ const JobPostDetailPage = () => {
       </JobPostWrapper>
       <Space />
       <SupportSubmit>
-        <button onClick={() => setShowSupportModal((prev) => !prev)}>
+        <button
+          onClick={() => {
+            console.log(user);
+            if (!user.isSignin) {
+              alert("로그인 후 이용가능합니다.");
+              return;
+            }
+            if (user.isSignin.data.isCompany) {
+              alert("기업회원은 지원할 수 없습니다.");
+              return;
+            }
+            setShowSupportModal((prev) => !prev);
+          }}
+        >
           지원하기
         </button>
       </SupportSubmit>
       <SupportModal id={showSupportModal && "active"}>
-        <SupportModalCloseBtn onClick={() => setShowSupportModal(false)}>
+        <SupportModalCloseBtn
+          onClick={() => {
+            setShowSupportModal(false);
+          }}
+        >
           <IoIosClose />
         </SupportModalCloseBtn>
         <p>
           <RiSendPlaneFill />
           지원하기
         </p>
-        <div className="user_info">
-          {user && user.isSignin && (
-            <tr>
-              <td width={200}>지원자 성함</td>
-              <td>{user.isSignin.data.name}</td>
-            </tr>
-          )}
+        {/*<div className="user_info">*/}
+        {/*  {user && user.isSignin && (*/}
+        {/*    <tr>*/}
+        {/*      <td width={200}>지원자 성함</td>*/}
+        {/*      <td>{user && user.isSignin.data.name}</td>*/}
+        {/*    </tr>*/}
+        {/*  )}*/}
 
-          {user && user.isSignin && (
-            <tr>
-              <td width={200}>지원자 연락처</td>
-              <td>{phoneFormat(user.isSignin.data.phone)}</td>
-            </tr>
-          )}
-        </div>
+        {/*  {user && user.isSignin && (*/}
+        {/*    <tr>*/}
+        {/*      <td width={200}>지원자 연락처</td>*/}
+        {/*      <td>{user && phoneFormat(user?.isSignin.data.phone)}</td>*/}
+        {/*    </tr>*/}
+        {/*  )}*/}
+        {/*</div>*/}
         <div className="support_length">{supportContent.length} / 500</div>
         <textarea
           placeholder="남기실 메모를 작성해주세요."

@@ -6,11 +6,11 @@ import {
   AiOutlineMenu,
 } from "react-icons/ai";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import UserMenu from "../../../components/UserMenu";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { authUser } from "../../../_actions/userActions";
+import { authUser } from "../../_actions/userActions";
+import UserMenu from "../../components/UserMenu";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -18,15 +18,19 @@ const Header = () => {
 
   const user = useSelector((state) => state.user);
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const [showAccountInfo, setShowAccountInfo] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState(
+    searchParams.get("keyword")
+  );
 
   const onSubmitSearch = (e) => {
     e.preventDefault();
     if (!searchKeyword) return;
+    // navigate(`/search?keyword=${searchKeyword}`);
+    navigate("/");
     navigate(`/search?keyword=${searchKeyword}`);
-    console.log("ds");
   };
 
   useEffect(() => {
@@ -36,8 +40,8 @@ const Header = () => {
   return (
     <Container>
       <Logo>
-        <img src="img/logo.png" />
-        <h3>알바 몬스터</h3>
+        <img src="img/logo.png" onClick={() => navigate("/")} />
+        <h3 onClick={() => navigate("/")}>알바 몬스터</h3>
         <div id="account_info">
           {!user.isSignin.success ? (
             <div onClick={() => setShowAccountInfo((prev) => !prev)}>

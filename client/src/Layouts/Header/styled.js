@@ -48,7 +48,9 @@ export const SearchSection = styled.div`
   width: 95%;
   border-radius: 100px;
   position: relative;
-  p {
+  button {
+    outline: none;
+    border: none;
     background-color: #ffeb00;
     width: 40px;
     height: 40px;
@@ -58,7 +60,7 @@ export const SearchSection = styled.div`
     justify-content: center;
     position: absolute;
     right: 6px;
-    top: -11px;
+    top: 5px;
     cursor: pointer;
   }
   input {
