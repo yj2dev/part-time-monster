@@ -1,3 +1,4 @@
+import React from "react";
 import { Container, Logo, SearchSection, AccountInfoSection } from "./styled";
 import {
   AiOutlineUser,
@@ -5,7 +6,7 @@ import {
   AiOutlineClose,
   AiOutlineMenu,
 } from "react-icons/ai";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,8 +18,9 @@ const Header = () => {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user);
+  const searchRef = React.createRef();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [showAccountInfo, setShowAccountInfo] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState(
@@ -26,10 +28,10 @@ const Header = () => {
   );
 
   const onSubmitSearch = (e) => {
+    searchRef.current.focus();
     e.preventDefault();
     if (!searchKeyword) return;
     // navigate(`/search?keyword=${searchKeyword}`);
-    navigate("/");
     navigate(`/search?keyword=${searchKeyword}`);
   };
 
@@ -65,6 +67,7 @@ const Header = () => {
       <SearchSection>
         <form onSubmit={onSubmitSearch}>
           <input
+            ref={searchRef}
             type="text"
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
