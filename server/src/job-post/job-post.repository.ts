@@ -22,17 +22,29 @@ export class JobPostRepository {
     private jobPostLikeRepository: Repository<JobPostLike>,
   ) {}
 
+  // 유저 아이디로 즐겨찾는 게시물 조회
+  async findFavoriteById(userId: string): Promise<JobPostLike[]> {
+    const result = this.jobPostLikeRepository.find({ fromUserId: userId });
+    return result;
+  }
+
+  // 유저 아이디로 지원한 채용게시물 조회
+  async findSupportPostById(userId: string): Promise<JobPostSupport[]> {
+    const result = this.jobPostSupportRepository.find({ fromUserId: userId });
+    return result;
+  }
+
+  // 유저 아이디로 등록한 채용 게시물들 조회
+  async getAllSupport(userId: string): Promise<JobPostSupport[]> {
+    const result = this.jobPostSupportRepository.find({ fromUserId: userId });
+    return result;
+  }
+
   // 단어로 알바 검색
   async findByKeyword(keyword): Promise<JobPost[] | undefined> {
     const result = this.jobPostRepository.find({
       title: Like(`%${keyword}%`),
     });
-    return result;
-  }
-
-  // 유저 아이디로 등록한 채용 게시물들 가져오기
-  async getAllSupport(userId: string): Promise<JobPostSupport[]> {
-    const result = this.jobPostSupportRepository.find({ fromUserId: userId });
     return result;
   }
 
@@ -81,13 +93,13 @@ export class JobPostRepository {
     // return result;
   }
 
-  // 하나의 채용 게시물만 가져오기
+  // 하나의 채용 게시물만 조회
   async getOnceJobPost(postId: string): Promise<JobPost> {
     const result = this.jobPostRepository.findOne(postId);
     return result;
   }
 
-  // 모든 채용 게시물 가져오기
+  // 모든 채용 게시물 조회
   async getAllJobPost(): Promise<JobPost[]> {
     const result = this.jobPostRepository.find({
       order: {

@@ -13,6 +13,14 @@ import { JobPostLike } from '../entities/JobPostLike';
 export class JobPostService {
   constructor(private readonly jobPostRepository: JobPostRepository) {}
 
+  async findFavoriteById(userId: string): Promise<JobPostLike[]> {
+    return await this.jobPostRepository.findFavoriteById(userId);
+  }
+
+  async findSupportPostById(userId: string): Promise<JobPostSupport[]> {
+    return await this.jobPostRepository.findSupportPostById(userId);
+  }
+
   async searchByKeyword(keyword: string) {
     return await this.jobPostRepository.findByKeyword(keyword);
   }

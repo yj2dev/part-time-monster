@@ -25,6 +25,18 @@ import { JobPostSupport } from '../entities/JobPostSupport';
 export class JobPostController {
   constructor(private readonly jobPostService: JobPostService) {}
 
+  @Get('/all/support')
+  @UseGuards(JwtAuthGuard)
+  async getAllSupport(@GetUser() user: User) {
+    return await this.jobPostService.findSupportPostById(user.id);
+  }
+
+  @Get('/all/favorite')
+  @UseGuards(JwtAuthGuard)
+  async getAllFavorite(@GetUser() user: User) {
+    return await this.jobPostService.findFavoriteById(user.id);
+  }
+
   @Get('/:keyword/search')
   async searchByKeyword(@Param('keyword') keyword: string) {
     return await this.jobPostService.searchByKeyword(keyword);
