@@ -15,6 +15,10 @@ import { UserLoginDto } from './dto/user.login.dto';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
+  async deleteAccount(userId: string) {
+    return await this.userRepository.deleteUser(userId);
+  }
+
   async updateUserInfo(userId, updateField) {
     const payload = { ...updateField };
     return await this.userRepository.updateUserWithoutPassword(payload);

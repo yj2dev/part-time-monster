@@ -66,7 +66,7 @@ export class AuthService {
     return true;
   }
 
-  // 로그인
+  // JWT 로그인
   async jwtSignin(id, password, isCompany) {
     // 해당하는 유저가 존재하는지 확인
     const user = await this.userRepository.findUserById(id);
@@ -104,5 +104,24 @@ export class AuthService {
     } catch (err) {
       throw new BadRequestException(err);
     }
+  }
+
+  // 로그인
+  async signin(id, password, isCompany) {
+    // 해당하는 유저가 존재하는지 확인
+    const user = await this.userRepository.findUserById(id);
+    console.log('user >> ', user);
+
+    if (!user) {
+      throw new UnauthorizedException('유저가 존재하지 않습니다.');
+    }
+
+    // 비밀번호가 일치하는지 확인
+    const isPassword: boolean = await bcrypt.compare(password, user.password);
+    if (!isPassword) {
+      throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
+    }
+
+    return user;
   }
 }

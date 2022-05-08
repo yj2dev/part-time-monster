@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   Patch,
@@ -31,6 +32,28 @@ export class UserController {
     private readonly userService: UserService,
     private readonly authService: AuthService,
   ) {}
+
+  // 회원탈퇴
+  @Delete('account')
+  @UseGuards(JwtAuthGuard)
+  async deleteAccount(
+    @GetUser() loginUser,
+    @Body('id') id: string,
+    @Body('password') password: string,
+    @Body('isCompany') isCompany: number,
+  ): Promise<any> {
+    const isUser: User = await this.authService.signin(id, password, isCompany);
+    console.log('loginUser >> ', loginUser);
+    console.log('isUser >> ', isUser);
+
+    // 쿠키에 저장된 유저와 입력된 계정이 동일한지 확인
+    if (isUser && isUser.id === loginUser.id) {
+      //회원탈퇴 진행
+      return await this.userService.deleteAccount(id);
+    } else {
+      throw new UnauthorizedException('회원정보가 일치하지 않습니다.');
+    }
+  }
 
   // 개인정보 수정
   @Patch('info')

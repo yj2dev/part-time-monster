@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/User';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { UserRegisterDto } from './dto/user.register.dto';
 import { Company } from '../entities/Company';
 
@@ -11,6 +11,12 @@ export class UserRepository {
     @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(Company) private companyRepository: Repository<Company>,
   ) {} //
+
+  async deleteUser(userId: string): Promise<DeleteResult | undefined> {
+    const result = await this.userRepository.delete({ id: userId });
+    console.log('deleteUser result >> ', result);
+    return result;
+  }
 
   async updateUserWithoutPassword(updateField) {
     console.log('updateField >> ', updateField);
