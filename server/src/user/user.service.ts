@@ -15,8 +15,9 @@ import { UserLoginDto } from './dto/user.login.dto';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async updatePassword(): Promise<any> {
-    return 'updatePassword';
+  async updateUserInfo(userId, updateField) {
+    const payload = { ...updateField };
+    return await this.userRepository.updateUserWithoutPassword(payload);
   }
 
   async login(userLoginDTO: UserLoginDto): Promise<any> {

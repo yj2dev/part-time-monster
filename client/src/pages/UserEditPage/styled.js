@@ -63,7 +63,7 @@ export const TabMenu = styled.div`
 `;
 export const SubTitle = styled.div`
   font-size: 24px;
-  margin-bottom: 20px;
+  margin: 40px 0 20px 0;
 `;
 export const RegisterForm = styled.div`
   background-color: #ffffff;
@@ -143,6 +143,7 @@ export const RegisterSubmit = styled.div`
   width: 100%;
   position: fixed;
   background-color: #ffffff;
+  left: 0;
   bottom: 0;
   display: flex;
   justify-content: center;
@@ -164,5 +165,5 @@ export const RegisterSubmit = styled.div`
 `;
 
 export const Space = styled.div`
-  height: 100px;
+  height: 50px;
 `;

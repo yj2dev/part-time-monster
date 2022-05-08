@@ -1,9 +1,10 @@
 import { Container } from "./styled";
 import { useEffect, useState } from "react";
-import { SubTitle } from "../../styled";
+import { RegisterSubmit, SubTitle } from "../../styled";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const EditUserInfoSection = ({ user }) => {
+const EditUserInfoSection = ({ user, isCompany }) => {
   const navigate = useNavigate();
   // 개인정보수정
   const [userName, setUserName] = useState("");
@@ -25,6 +26,32 @@ const EditUserInfoSection = ({ user }) => {
   useEffect(() => {
     setUser(user.isSignin.data);
   }, []);
+
+  function onSubmit() {
+    if (!userName || !userBirth || !userEmail || !userPhone) return;
+
+    const payload = {
+      name: userName,
+      birth: userBirth,
+      sex: userIsWoman ? "여자" : "남자",
+      email: userEmail,
+      phone: userPhone,
+    };
+    axios
+      .patch(`/api/user/info`, payload)
+      .then(({ data }) => {
+        console.log("data >> ", data);
+        if (data.success) {
+          alert("개인정보가 성공적으로 수정되었습니다.");
+        } else {
+          alert("개인정보가 수정에 실패했습니다..");
+        }
+      })
+      .catch((err) => {
+        alert("개인정보가 수정에 실패했습니다..");
+        console.log(err);
+      });
+  }
 
   return (
     <Container>
@@ -104,6 +131,11 @@ const EditUserInfoSection = ({ user }) => {
           </td>
         </tr>
       </table>
+      <RegisterSubmit>
+        <button className={isCompany && "register-company"} onClick={onSubmit}>
+          수정하기
+        </button>
+      </RegisterSubmit>
     </Container>
   );
 };

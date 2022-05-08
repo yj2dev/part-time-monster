@@ -17,6 +17,7 @@ import DaumPostcode from "react-daum-postcode";
 import EditCompanySection from "./Sections/EditCompanySection";
 import EditUserInfoSection from "./Sections/EditUserInfoSection";
 import EditPasswordSection from "./Sections/EditPasswordSection";
+import DeleteUserSection from "./Sections/DeleteUserSection";
 
 const UserEditPage = () => {
   const navigate = useNavigate();
@@ -28,7 +29,6 @@ const UserEditPage = () => {
   const setUser = (user) => {
     if (!user) navigate("/");
     console.log("setUser user >> ", user);
-
     setIsCompany(user.isCompany ? true : false);
   };
 
@@ -39,13 +39,8 @@ const UserEditPage = () => {
   }, []);
 
   const onClickTabMenu = (e) => {
-    console.log(activeMenu);
     setActiveMenu(e.target.value);
   };
-
-  function onSubmitRegister() {
-    return;
-  }
 
   return (
     <Container>
@@ -59,16 +54,15 @@ const UserEditPage = () => {
         <ul>
           <li
             id={isCompany && `company`}
-            className={activeMenu == "1" && "active"}
+            className={activeMenu.toString() === "1" && "active"}
             value="1"
             onClick={onClickTabMenu}
           >
             비밀번호수정
           </li>
-
           <li
             id={isCompany && `company`}
-            className={activeMenu == "2" && "active"}
+            className={activeMenu.toString() === "2" && "active"}
             value="2"
             onClick={onClickTabMenu}
           >
@@ -77,7 +71,7 @@ const UserEditPage = () => {
           {isCompany && (
             <li
               id={isCompany && `company`}
-              className={activeMenu == "3" && "active"}
+              className={activeMenu.toString() === "3" && "active"}
               value="3"
               onClick={onClickTabMenu}
             >
@@ -86,7 +80,7 @@ const UserEditPage = () => {
           )}
           <li
             id={isCompany && `company`}
-            className={activeMenu == "4" && "active"}
+            className={activeMenu.toString() === "4" && "active"}
             value="4"
             onClick={onClickTabMenu}
           >
@@ -95,41 +89,20 @@ const UserEditPage = () => {
         </ul>
       </TabMenu>
       <RegisterForm>
-        <div className="radio-user-type">
-          <input
-            type="radio"
-            id="selected-private"
-            name="register-type"
-            value="개인회원"
-            checked={!isCompany}
-            onClick={() => setIsCompany(false)}
-          />
-          <label htmlFor="selected-private">개인회원</label>
-          <input
-            type="radio"
-            id="selected-company"
-            name="register-type"
-            value="기업회원"
-            checked={isCompany}
-            onClick={() => setIsCompany(true)}
-          />
-          <label htmlFor="selected-company">기업회원</label>
-        </div>
-        {activeMenu == "1" && <EditPasswordSection user={user} />}
-
-        {activeMenu == "2" && <EditUserInfoSection user={user} />}
-        {isCompany && activeMenu == "3" && <EditCompanySection user={user} />}
-
+        {activeMenu.toString() === "1" && (
+          <EditPasswordSection user={user} isCompany={isCompany} />
+        )}
+        {activeMenu.toString() === "2" && (
+          <EditUserInfoSection user={user} isCompany={isCompany} />
+        )}
+        {isCompany && activeMenu.toString() === "3" && (
+          <EditCompanySection user={user} isCompany={isCompany} />
+        )}
+        {activeMenu.toString() === "4" && (
+          <DeleteUserSection user={user} isCompany={isCompany} />
+        )}
         <Space />
       </RegisterForm>
-      <RegisterSubmit>
-        <button
-          className={isCompany && "register-company"}
-          onClick={onSubmitRegister}
-        >
-          수정하기
-        </button>
-      </RegisterSubmit>
     </Container>
   );
 };

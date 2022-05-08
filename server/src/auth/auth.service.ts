@@ -28,6 +28,9 @@ export class AuthService {
     currentPassword: string,
     password: string,
   ) {
+    if (!userId || !currentPassword || !password) {
+      throw new HttpException('비어있는 항목이 있습니다.', 401);
+    }
     console.log('userId >> ', userId);
     console.log('currentPassword >> ', currentPassword);
     console.log('password >> ', password);
@@ -51,6 +54,7 @@ export class AuthService {
 
     // 변경할 비밀번호 암호화
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log('hashedPassword >> ', hashedPassword);
 
     // 비밀번호 저장
     const passwordSaveResult = await this.userRepository.updatePassword(

@@ -15,7 +15,7 @@ const config: TypeOrmModuleOptions = {
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
   entities: [User, Company, JobPost, JobPostSupport, JobPostLike],
-  logging: true,
+  // logging: true,
   synchronize: true,
   keepConnectionAlive: true,
 };

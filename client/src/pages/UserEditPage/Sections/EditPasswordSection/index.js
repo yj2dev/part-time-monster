@@ -1,9 +1,10 @@
 import { Container } from "./styled";
-import { SubTitle } from "../../styled";
+import { RegisterSubmit, SubTitle } from "../../styled";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const EditCompanySection = ({ user }) => {
+const EditCompanySection = ({ user, isCompany }) => {
   const navigate = useNavigate();
 
   // 비밀번호수정
@@ -22,6 +23,37 @@ const EditCompanySection = ({ user }) => {
   useEffect(() => {
     setUser(user.isSignin.data);
   }, []);
+
+  function onSubmit() {
+    if (!userCurrentPassword || !userPassword || !userPasswordCheck) return;
+    if (userPassword !== userPasswordCheck) {
+      setError({ ...error, passwordCheck: true });
+      return;
+    } else setError({ ...error, passwordCheck: false });
+
+    const payload = {
+      currentPassword: userCurrentPassword,
+      updatePassword: userPasswordCheck,
+    };
+    axios
+      .patch(`/api/user/password`, payload)
+      .then(({ data }) => {
+        console.log("data >> ", data);
+        if (data.success) {
+          alert(
+            "비밀번호가 성공적으로 수정되었습니다.\n확인을 위해 재로그인 해주세요."
+          );
+          navigate("/login");
+        } else {
+          alert("비밀번호 수정에 실패했습니다.");
+        }
+      })
+      .catch((err) => {
+        alert("비밀번호 수정에 실패했습니다.");
+        console.log(err);
+      });
+  }
+
   return (
     <Container>
       <SubTitle>비밀번호수정</SubTitle>
@@ -74,6 +106,11 @@ const EditCompanySection = ({ user }) => {
           </td>
         </tr>
       </table>
+      <RegisterSubmit>
+        <button className={isCompany && "register-company"} onClick={onSubmit}>
+          수정하기
+        </button>
+      </RegisterSubmit>
     </Container>
   );
 };

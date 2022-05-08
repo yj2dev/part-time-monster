@@ -12,8 +12,27 @@ export class UserRepository {
     @InjectRepository(Company) private companyRepository: Repository<Company>,
   ) {} //
 
+  async updateUserWithoutPassword(updateField) {
+    console.log('updateField >> ', updateField);
+
+    let result = null;
+    if (updateField.isCompany) {
+      // 기업정보 변경
+      result = await this.companyRepository.save({ ...updateField });
+    } else {
+      // 개인정보 변경
+      result = await this.userRepository.save({ ...updateField });
+    }
+
+    console.log('result >> ', result);
+    return result;
+  }
+
   async updatePassword(id, password) {
-    const result = await this.userRepository.update(id, password);
+    const result = await this.userRepository.save({
+      id,
+      password,
+    });
     console.log('updatePassword result >> ', result);
     return result;
   }

@@ -1,11 +1,12 @@
 import { Container } from "./styled";
-import { PostCodeButton, SubTitle } from "../../styled";
+import { PostCodeButton, RegisterSubmit, SubTitle } from "../../styled";
 import Modal from "../../../../components/modal";
 import DaumPostcode from "react-daum-postcode";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const EditCompanySection = ({ user }) => {
+const EditCompanySection = ({ user, isCompany }) => {
   const navigate = useNavigate();
   const [onShowSelectPostCode, setOnShowSelectPostCode] = useState(false);
 
@@ -30,6 +31,35 @@ const EditCompanySection = ({ user }) => {
       setCompanySize(user.toCompany.size);
     }
   };
+
+  function onSubmit() {
+    if (!companyName || !companyCeoName || !companyContact || !companySize)
+      return;
+
+    const payload = {
+      number: companyNumber,
+      name: companyName,
+      ceoName: companyCeoName,
+      contact: companyContact,
+      address: companyAddress,
+      size: companySize,
+      isCompany,
+    };
+    axios
+      .patch(`/api/user/info`, payload)
+      .then(({ data }) => {
+        console.log("data >> ", data);
+        if (data.success) {
+          alert("기업정보가 성공적으로 수정되었습니다.");
+        } else {
+          alert("기업정보가 수정에 실패했습니다..");
+        }
+      })
+      .catch((err) => {
+        alert("기업정보가 수정에 실패했습니다..");
+        console.log(err);
+      });
+  }
 
   useEffect(() => {
     setUser(user.isSignin.data);
@@ -58,9 +88,10 @@ const EditCompanySection = ({ user }) => {
       <SubTitle>기업정보수정</SubTitle>
       <table>
         <tr>
-          <td width="200px">사업자번호</td>
+          <td width="200px">사업자번호 (수정불가)</td>
           <td>
             <input
+              disabled={true}
               type="text"
               placeholder="1122334455"
               value={companyNumber}
@@ -127,14 +158,27 @@ const EditCompanySection = ({ user }) => {
               name="company-size"
               onChange={(e) => setCompanySize(e.target.value)}
             >
-              <option value="스타트업">스타트업</option>
-              <option value="중소기업">중소기업</option>
-              <option value="중견기업">중견기업</option>
-              <option value="대기업">대기업</option>
+              <option selected={companySize === "스타트업"} value="스타트업">
+                스타트업
+              </option>
+              <option selected={companySize === "중소기업"} value="중소기업">
+                중소기업
+              </option>
+              <option selected={companySize === "중견기업"} value="중견기업">
+                중견기업
+              </option>
+              <option selected={companySize === "대기업"} value="대기업">
+                대기업
+              </option>
             </select>
           </td>
         </tr>
       </table>
+      <RegisterSubmit>
+        <button className={isCompany && "register-company"} onClick={onSubmit}>
+          수정하기
+        </button>
+      </RegisterSubmit>
     </Container>
   );
 };
