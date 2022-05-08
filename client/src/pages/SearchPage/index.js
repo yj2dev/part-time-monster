@@ -28,7 +28,7 @@ import { authUser } from "../../_actions/userActions";
 const SearchPage = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [post, setPost] = useState(null);
+  const [post, setPost] = useState([]);
 
   function getSearchResult(keyword) {
     axios
