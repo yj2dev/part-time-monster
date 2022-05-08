@@ -75,23 +75,7 @@ export const ServiceWrapper = styled.div`
     justify-content: center;
     align-items: center;
   }
-  .badge {
-    margin-left: 12px;
-    display: inline-block;
-    text-align: center;
-    padding: 5px 10px;
-    border-radius: 12px;
-    background-color: green;
-    font-size: 18px;
-    color: #ffffff;
-    box-shadow: 4px 4px 5px 1px rgba(0, 0, 0, 0.3);
-  }
-  .private-badge {
-    background-color: #f66b0e;
-  }
-  .company-badge {
-    background-color: #3266cc;
-  }
+
   .my-menu {
     display: flex;
     justify-content: center;
@@ -104,5 +88,59 @@ export const ServiceWrapper = styled.div`
     align-items: center;
     padding: 30px 0 30px 12px;
     cursor: pointer;
+  }
+`;
+export const Badge = styled.div`
+  margin-left: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 12px 12px 0px 12px;
+  font-size: 24px;
+  color: #ffffff;
+  box-shadow: 4px 4px 5px 1px rgba(0, 0, 0, 0.3);
+  position: absolute;
+  width: 200px;
+  height: 50px;
+  top: 50px;
+  right: -18px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    border-radius: 0 0 12px 0;
+    bottom: -18px;
+    right: 0;
+    width: 18px;
+    height: 18px;
+    background-color: #3266cc;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    border-radius: 0 12px 12px 0;
+    bottom: -14px;
+    right: 4px;
+    width: 14px;
+    height: 12px;
+    background-color: #00b3ed;
+  }
+
+  &.private-badge::before {
+    background-color: #f66b0e;
+  }
+
+  &.private-badge::after {
+    background-color: #ff9f61;
+  }
+
+  &.private-badge {
+    background-color: #f66b0e;
+  }
+
+  &.company-badge {
+    background-color: #3266cc;
   }
 `;

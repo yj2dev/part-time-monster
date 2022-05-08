@@ -28,6 +28,12 @@ import { DeleteResult } from 'typeorm';
 export class JobPostController {
   constructor(private readonly jobPostService: JobPostService) {}
 
+  @Get('/wrote-all')
+  @UseGuards(JwtAuthGuard)
+  async getAllPostByUserId(@GetUser() user: User): Promise<JobPost[]> {
+    return await this.jobPostService.getAllPostByUserId(user.id);
+  }
+
   @Delete('/:supportId/support')
   @UseGuards(JwtAuthGuard)
   async deleteSupport(

@@ -1,4 +1,4 @@
-import { Container, ServiceWrapper } from "./styled";
+import { Badge, Container, ServiceWrapper } from "./styled";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -7,7 +7,7 @@ import { IoHeartCircleOutline, IoDocumentTextOutline } from "react-icons/io5";
 import { MdArrowForwardIos } from "react-icons/md";
 
 import Gravatar from "react-gravatar";
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import { AiOutlineStar } from "react-icons/ai";
 
 const UserMenu = ({ user }) => {
   const dispatch = useDispatch();
@@ -47,9 +47,9 @@ const UserMenu = ({ user }) => {
               </Link>
             </div>
             {!user.isCompany ? (
-              <div className="badge private-badge">개인회원</div>
+              <Badge className="private-badge">개인회원</Badge>
             ) : (
-              <div className="badge company-badge">기업회원</div>
+              <Badge className="company-badge">기업회원</Badge>
             )}
           </div>
         </div>

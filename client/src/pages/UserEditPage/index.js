@@ -1,19 +1,9 @@
 import { Container, TabMenu, Title } from "./styled";
 import { IoIosArrowBack } from "react-icons/io";
-import {
-  CloseIcon,
-  PostCodeButton,
-  RegisterForm,
-  RegisterSubmit,
-  Space,
-  SubTitle,
-} from "./styled";
+import { CloseIcon, RegisterForm, Space } from "./styled";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import Modal from "../../components/modal";
-import DaumPostcode from "react-daum-postcode";
+import { useEffect, useState } from "react";
 import EditCompanySection from "./Sections/EditCompanySection";
 import EditUserInfoSection from "./Sections/EditUserInfoSection";
 import EditPasswordSection from "./Sections/EditPasswordSection";

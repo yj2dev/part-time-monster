@@ -1,5 +1,5 @@
 import { Container, DeleteAccountTitle, WarningMessage } from "./styled";
-import { RegisterSubmit, SubTitle } from "../../styled";
+import { RegisterSubmit } from "../../styled";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";

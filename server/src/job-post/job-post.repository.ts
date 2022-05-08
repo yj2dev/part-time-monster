@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   Column,
   DeleteResult,
+  getRepository,
   Like,
   PrimaryGeneratedColumn,
   Repository,
@@ -27,6 +28,31 @@ export class JobPostRepository {
     @InjectRepository(JobPostLike)
     private jobPostLikeRepository: Repository<JobPostLike>,
   ) {}
+
+  // 유저 아이디로 등록한 채용 게시물들 조회
+  async findPostById(userId: string): Promise<any> {
+    console.log('userId >> ', userId);
+    // const result = this.jobPostRepository.find({ fromUserId: userId });
+
+    // const result = await this.jobPostRepository
+    //   .createQueryBuilder('jobpost')
+    //   .leftJoinAndSelect(
+    //     'jobpost.jobPostSupports',
+    //     's',
+    //     's.fromUserId =:userId',
+    //     { userId },
+    //   )
+    //   .getManyAndCount();
+
+    const result = await this.jobPostRepository
+      .createQueryBuilder('jobpost')
+      .leftJoinAndSelect('jobpost.jobPostSupports', 's')
+      .where('s.fromUserId =:userId', { userId })
+      .getMany();
+    console.log('result >> ', result);
+
+    return result;
+  }
 
   // 유저 아이디로 즐겨찾는 게시물 조회
   async findFavoriteById(userId: string): Promise<JobPostLike[]> {
@@ -56,12 +82,6 @@ export class JobPostRepository {
       id: supportId,
       content,
     });
-    return result;
-  }
-
-  // 유저 아이디로 등록한 채용 게시물들 조회
-  async getAllSupport(userId: string): Promise<JobPostSupport[]> {
-    const result = this.jobPostSupportRepository.find({ fromUserId: userId });
     return result;
   }
 
