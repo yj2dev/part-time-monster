@@ -33,9 +33,9 @@ export class JobPostController {
   async updateJobPost(
     @Param('postId') postId: string,
     @Body('') jobPostField: JobPost,
-  ): Promise<JobPostSupport> {
+  ): Promise<JobPost> {
     console.log('update jobpost >> ', postId, jobPostField);
-    return await this.jobPostService.updateSupport(postId, jobPostField);
+    return await this.jobPostService.updateJobPost(postId, jobPostField);
   }
 
   @Delete('/:postId/post')

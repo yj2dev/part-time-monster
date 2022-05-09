@@ -172,9 +172,8 @@ const EditJobPostWritePage = () => {
     };
 
     console.log("payload >> ", payload);
-
     axios
-      .post("/api/job-post/create", payload)
+      .patch(`/api/job-post/${postId}/post`, payload)
       .then(({ data }) => {
         console.log("data >> ", data);
         if (data.success) {

@@ -29,6 +29,16 @@ export class JobPostRepository {
     private jobPostLikeRepository: Repository<JobPostLike>,
   ) {}
 
+  // 채용 게시물 등록
+  async updateJobPost(postId: number, jobPostField: JobPost) {
+    const result = await this.jobPostRepository.save({
+      id: postId,
+      ...jobPostField,
+    });
+    console.log('createJobPost result >> ', result);
+    return result;
+  }
+
   // 게시물번호(아이디)로 채용게시물 삭제
   async deletePost(postId: number): Promise<DeleteResult> {
     console.log('deletePost postId >> ', postId);

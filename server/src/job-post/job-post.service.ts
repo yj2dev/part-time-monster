@@ -13,6 +13,14 @@ import { JobPostLike } from '../entities/JobPostLike';
 export class JobPostService {
   constructor(private readonly jobPostRepository: JobPostRepository) {}
 
+  // 유저 아이디로 지원한 채용게시물 수정
+  async updateJobPost(postId: string, jobPostField: JobPost): Promise<JobPost> {
+    return await this.jobPostRepository.updateJobPost(
+      parseInt(postId),
+      jobPostField,
+    );
+  }
+
   async deleteJobPost(postId: string): Promise<DeleteResult> {
     return await this.jobPostRepository.deletePost(parseInt(postId));
   }
