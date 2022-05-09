@@ -50,9 +50,27 @@ const JobPostManage = () => {
     }
 
     console.log("삭제시도");
+
+    axios
+      .delete(`/api/job-post/${e.target.value}/post`)
+      .then(({ data }) => {
+        if (data.success) {
+          navigate(`/`);
+          navigate(`/post/manage`);
+        } else {
+          alert("삭제에 실패했습니다.");
+        }
+      })
+      .catch((err) => {
+        alert("삭제에 실패했습니다.");
+      });
   };
-  const onClickEdit = () => {};
-  const onClickDetail = () => {};
+  const onClickEdit = (e) => {
+    navigate(`/post/edit?no=${e.target.value}`);
+  };
+  const onClickDetail = (e) => {
+    navigate(`/post/${e.target.value}`);
+  };
 
   return (
     <Container>
@@ -95,7 +113,7 @@ const JobPostManage = () => {
               {post.jobPostSupports.length !== 0 ? (
                 <>
                   <div className="support_count">
-                    지원자 목록 ({post.jobPostSupports.length}명)
+                    지원자 목록 (<span>{post.jobPostSupports.length}</span>명)
                   </div>
                   <SupportWrapper>
                     {post.jobPostSupports &&

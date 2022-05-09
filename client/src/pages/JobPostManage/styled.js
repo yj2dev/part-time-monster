@@ -144,6 +144,10 @@ export const PostWrapper = styled.button`
     font-size: 20px;
     position: relative;
     padding-top: 12px;
+    font-weight: 800;
+    span {
+      color: #4b4bff;
+    }
   }
 
   .post_no {

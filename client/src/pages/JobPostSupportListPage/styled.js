@@ -123,7 +123,8 @@ export const PostWrapper = styled.button`
     font-size: 16px;
     text-align: center;
     border-radius: 0 24px 0 4px;
-    background-color: rgba(0, 0, 0, 0.5);
+    //background-color: rgba(255, 0, 0, 0.5);
+    background-color: #ff7918;
   }
   .content {
     white-space: pre-wrap;

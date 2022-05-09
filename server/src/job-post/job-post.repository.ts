@@ -29,6 +29,16 @@ export class JobPostRepository {
     private jobPostLikeRepository: Repository<JobPostLike>,
   ) {}
 
+  // 게시물번호(아이디)로 채용게시물 삭제
+  async deletePost(postId: number): Promise<DeleteResult> {
+    console.log('deletePost postId >> ', postId);
+    const result = await this.jobPostRepository.delete({
+      id: postId,
+    });
+    console.log('deletePost result >> ', result);
+    return result;
+  }
+
   // 유저 아이디로 등록한 채용 게시물들 조회
   async findPostById(userId: string): Promise<any> {
     console.log('userId >> ', userId);
@@ -67,7 +77,7 @@ export class JobPostRepository {
     return result;
   }
 
-  // 유저 아이디로 지원한 채용게시물 삭제
+  // 지원번호(아이디)로 지원한 채용게시물 삭제
   async deleteSupport(supportId: number): Promise<DeleteResult> {
     const result = await this.jobPostSupportRepository.delete({
       id: supportId,

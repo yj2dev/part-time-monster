@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import JobPostWritePage from "./pages/JobPostWritePage";
@@ -10,6 +10,7 @@ import JobPostSupportListPage from "./pages/JobPostSupportListPage";
 import JobPostFavorite from "./pages/JobPostFavoritePage";
 import UserEditPage from "./pages/UserEditPage";
 import JobPostManage from "./pages/JobPostManage";
+import EditJobPostWritePage from "./pages/EditJobPostWritePage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             path="/post/support-list"
             element={<JobPostSupportListPage />}
           ></Route>
+          <Route path="/post/edit" element={<EditJobPostWritePage />}></Route>
           <Route path="/post/write" element={<JobPostWritePage />}></Route>
           <Route path="/post/:postId" element={<JobPostDetailPage />}></Route>
           <Route path="/register" element={<RegisterPage />}></Route>

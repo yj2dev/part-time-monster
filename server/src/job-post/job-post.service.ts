@@ -13,6 +13,10 @@ import { JobPostLike } from '../entities/JobPostLike';
 export class JobPostService {
   constructor(private readonly jobPostRepository: JobPostRepository) {}
 
+  async deleteJobPost(postId: string): Promise<DeleteResult> {
+    return await this.jobPostRepository.deletePost(parseInt(postId));
+  }
+
   async getAllPostByUserId(userId: string): Promise<JobPost[]> {
     return await this.jobPostRepository.findPostById(userId);
   }

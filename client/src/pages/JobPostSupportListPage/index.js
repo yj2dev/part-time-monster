@@ -63,8 +63,6 @@ const JobPostSupportListPage = () => {
       return;
     }
 
-    console.log("삭제 시도...");
-    return;
     axios
       .delete(`/api/job-post/${e.target.value}/support`)
       .then(({ data }) => {
@@ -141,7 +139,7 @@ const JobPostSupportListPage = () => {
               <button value={`${v.id}/${i}`} onClick={showUpdate}>
                 수정
               </button>
-              <button value={v.id} onClick={onClickDetail}>
+              <button value={v.toJobPostId} onClick={onClickDetail}>
                 상세보기
               </button>
             </PostWrapper>
