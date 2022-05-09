@@ -32,23 +32,15 @@ export class JobPostRepository {
   // 유저 아이디로 등록한 채용 게시물들 조회
   async findPostById(userId: string): Promise<any> {
     console.log('userId >> ', userId);
-    // const result = this.jobPostRepository.find({ fromUserId: userId });
 
-    // const result = await this.jobPostRepository
-    //   .createQueryBuilder('jobpost')
-    //   .leftJoinAndSelect(
-    //     'jobpost.jobPostSupports',
-    //     's',
-    //     's.fromUserId =:userId',
-    //     { userId },
-    //   )
-    //   .getManyAndCount();
+    const result = await this.jobPostRepository.find({
+      where: { fromUserId: userId },
+      relations: ['jobPostSupports'],
+      order: {
+        createdAt: 'DESC',
+      },
+    });
 
-    const result = await this.jobPostRepository
-      .createQueryBuilder('jobpost')
-      .leftJoinAndSelect('jobpost.jobPostSupports', 's')
-      .where('s.fromUserId =:userId', { userId })
-      .getMany();
     console.log('result >> ', result);
 
     return result;
@@ -64,7 +56,14 @@ export class JobPostRepository {
 
   // 유저 아이디로 지원한 채용게시물 조회
   async findSupportPostById(userId: string): Promise<JobPostSupport[]> {
-    const result = this.jobPostSupportRepository.find({ fromUserId: userId });
+    const result = this.jobPostSupportRepository.find({
+      where: {
+        fromUserId: userId,
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+    });
     return result;
   }
 

@@ -56,6 +56,15 @@ const JobPostSupportListPage = () => {
     navigate(`/post/${e.target.value}`);
   };
   const onClickDelete = (e) => {
+    const inputNo = prompt("지원내용 삭제를 확인하기 지원번호를 입력해주세요.");
+    if (!inputNo) return;
+    if (inputNo !== e.target.value.toString()) {
+      alert("지원번호가 일치하지 않습니다.");
+      return;
+    }
+
+    console.log("삭제 시도...");
+    return;
     axios
       .delete(`/api/job-post/${e.target.value}/support`)
       .then(({ data }) => {
@@ -116,6 +125,7 @@ const JobPostSupportListPage = () => {
                 {timeFormat(v.toJobPost.workingStartTime)}&nbsp;~&nbsp;
                 {timeFormat(v.toJobPost.workingEndTime)}
               </div>
+              <div className="support_no">지원번호 {v.id}</div>
               <div className="content">
                 <h3>지원 내용</h3>
                 {v.content}

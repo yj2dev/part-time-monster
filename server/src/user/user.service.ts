@@ -20,7 +20,7 @@ export class UserService {
   }
 
   async updateUserInfo(userId, updateField) {
-    const payload = { ...updateField };
+    const payload = { id: userId, ...updateField };
     return await this.userRepository.updateUserWithoutPassword(payload);
   }
 

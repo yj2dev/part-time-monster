@@ -110,7 +110,7 @@ export class AuthService {
   async signin(id, password, isCompany) {
     // 해당하는 유저가 존재하는지 확인
     const user = await this.userRepository.findUserById(id);
-    console.log('user >> ', user);
+    // console.log('user >> ', user);
 
     if (!user) {
       throw new UnauthorizedException('유저가 존재하지 않습니다.');

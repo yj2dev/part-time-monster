@@ -42,6 +42,7 @@ export const PostWrapper = styled.button`
 
   & button {
     font-size: 16px;
+    font-weight: 800;
     width: 120px;
     height: 40px;
     margin: 24px 6px 0 6px;
@@ -51,22 +52,27 @@ export const PostWrapper = styled.button`
     cursor: pointer;
     transition: 0.2s;
   }
+
   & button:hover {
     background-color: #d9d9d9;
     color: #ffffff;
   }
+
   .delete_btn {
     border: 2px solid #ff5c5c;
     color: #ff5c5c;
   }
+
   .delete_btn:hover {
     background-color: #ff5c5c;
     color: #ffffff;
   }
+
   .time {
     text-align: left;
     font-size: 15px;
   }
+
   .company_name {
     color: #000000;
     font-weight: 800;
@@ -74,6 +80,7 @@ export const PostWrapper = styled.button`
     padding-bottom: 4px;
     text-align: left;
   }
+
   .title {
     text-align: left;
     white-space: nowrap;
@@ -83,36 +90,56 @@ export const PostWrapper = styled.button`
     color: #000000;
     font-size: 22px;
   }
+
   .pay {
     font-weight: 800;
     text-align: left;
     font-size: 18px;
     color: #000000;
     margin-bottom: 24px;
+
     span {
       color: #e15756;
     }
   }
+
   .address {
     font-size: 15px;
     text-align: left;
   }
+
   .day {
     font-size: 15px;
     text-align: left;
     margin-bottom: 24px;
   }
+  .support_no {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 4px 0;
+    width: 200px;
+    color: #ffffff;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 0 24px 0 4px;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
   .content {
     white-space: pre-wrap;
+    position: relative;
+
     h3 {
       margin: 0px;
       padding: 8px 0;
     }
+
     textarea {
       width: 100%;
       height: 150px;
       resize: none;
     }
+
     text-align: left;
     font-size: 18px;
     color: #000000;
